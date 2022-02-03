@@ -12,7 +12,6 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -26,6 +25,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DriveWithJoystick;
+import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -45,22 +45,22 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     Drivetrain.getInstance();
+    Camera.getInstance();
     CommandScheduler.getInstance().setDefaultCommand(Drivetrain.getInstance(), new DriveWithJoystick());
     Thread.currentThread().setPriority(2);
-
     new Thread(() -> {
       Thread.currentThread().setPriority(1);
 
       UsbCamera camera = CameraServer.startAutomaticCapture();
-      camera.setResolution(352, 240);
+      camera.setResolution(100, 100);
 
       CvSink cvSink = CameraServer.getVideo();
-      CvSource blurStream = CameraServer.putVideo("Blur", 352, 240);
-      CvSource rgbThreshStream = CameraServer.putVideo("RGB Threshold", 352, 240);
-      CvSource hsvThreshStream = CameraServer.putVideo("HSV Threshold", 352, 240);
-      CvSource hslThreshStream = CameraServer.putVideo("HSL Threshold", 352, 240);
-      CvSource threshOrStream = CameraServer.putVideo("Threshold Bitwise AND", 352, 240);
-      CvSource outputStream = CameraServer.putVideo("Output", 352, 240);
+      CvSource blurStream = CameraServer.putVideo("Blur", 100, 100);
+      CvSource rgbThreshStream = CameraServer.putVideo("RGB Threshold", 100, 100);
+      CvSource hsvThreshStream = CameraServer.putVideo("HSV Threshold", 100, 100);
+      CvSource hslThreshStream = CameraServer.putVideo("HSL Threshold", 100, 100);
+      CvSource threshOrStream = CameraServer.putVideo("Threshold Bitwise AND", 100, 100);
+      CvSource outputStream = CameraServer.putVideo("Output", 100, 100);
 
       Mat source = new Mat();
       Mat blur = new Mat();
@@ -112,31 +112,41 @@ public class Robot extends TimedRobot {
         Core.bitwise_and(rgb_thresh, hsv_thresh, rgb_hsv_and);
         Core.bitwise_and(rgb_hsv_and, hsl_thresh, thresh_and);
 
+        // Contour detection and bounding rect drawing
         List<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
         Imgproc.findContours(thresh_and, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-        Mat drawing = Mat.zeros(thresh_and.size(), CvType.CV_8UC3);
-        MatOfPoint biggestContour = contours.get(0);
-
-        for (int i = 0; i<contours.size(); i++) {
-          if (contours.get(i).width() * contours.get(i).height() > biggestContour.width() * biggestContour.height()) {
-            biggestContour = contours.get(i);
-          }
-          Scalar color = new Scalar(0, 200, 0);
-          Imgproc.drawContours(drawing, contours, i, color, 2, 2, hierarchy, 0, new Point());
+        if (contours.size() > 10) {
+          continue;
         }
-        Point[] contourPoints = biggestContour.toArray();
-        MatOfPoint2f poly = new MatOfPoint2f();
-        Imgproc.approxPolyDP(new MatOfPoint2f(contourPoints), poly, 3, true);
-        Rect rect = Imgproc.boundingRect(new MatOfPoint(poly));
-        SmartDashboard.putNumber("BiggestContourCenterX", rect.x);
-        SmartDashboard.putNumber("BiggestContourCenterY", rect.y);
-        SmartDashboard.putNumber("BiggestContourArea", biggestContour.width() * biggestContour.height());
-        blurStream.putFrame(blur);
-        rgbThreshStream.putFrame(rgb_thresh);
-        hsvThreshStream.putFrame(hsv_thresh);
-        hslThreshStream.putFrame(hsl_thresh);
-        threshOrStream.putFrame(thresh_and);
+        MatOfPoint2f[] contoursPoly  = new MatOfPoint2f[contours.size()];
+        Rect[] boundRect = new Rect[contours.size()];
+        for (int i = 0; i < contours.size(); i++) {
+            contoursPoly[i] = new MatOfPoint2f();
+            Imgproc.approxPolyDP(new MatOfPoint2f(contours.get(i).toArray()), contoursPoly[i], 3, true);
+            boundRect[i] = Imgproc.boundingRect(new MatOfPoint(contoursPoly[i].toArray()));
+        }
+        Mat drawing = Mat.zeros(thresh_and.size(), CvType.CV_8UC3);
+        List<MatOfPoint> contoursPolyList = new ArrayList<>(contoursPoly.length);
+        for (MatOfPoint2f poly : contoursPoly) {
+            contoursPolyList.add(new MatOfPoint(poly.toArray()));
+        }
+        Rect biggestContour = boundRect[0];
+        for (int i = 0; i < boundRect.length; i++) {
+          if (boundRect[i].area() > biggestContour.area()) {
+            biggestContour = boundRect[i];
+          }
+        }
+        Imgproc.rectangle(drawing, biggestContour.tl(), biggestContour.br(), new Scalar(0, 250, 0), 2);
+
+        SmartDashboard.putNumber("BiggestContourCenterX", biggestContour.x);
+        SmartDashboard.putNumber("BiggestContourCenterY", biggestContour.y);
+        SmartDashboard.putNumber("BiggestContourArea", biggestContour.area());
+        // blurStream.putFrame(blur);
+        // rgbThreshStream.putFrame(rgb_thresh);
+        // hsvThreshStream.putFrame(hsv_thresh);
+        // hslThreshStream.putFrame(hsl_thresh);
+        // threshOrStream.putFrame(thresh_and);
         outputStream.putFrame(drawing);
       }
     }).start();
@@ -152,6 +162,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     Drivetrain.getInstance().logToSmartDashboard();
+    Camera.getInstance().logToSmartDashboard();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
