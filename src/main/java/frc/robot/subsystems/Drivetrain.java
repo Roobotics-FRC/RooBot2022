@@ -5,11 +5,13 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.PigeonIMU;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.RobotMap;
 
-public class Drivetrain extends SubsystemBase {
+public class Drivetrain extends PIDSubsystem {
     private static volatile Drivetrain instance;
 
     private TalonFX right1;
@@ -18,6 +20,13 @@ public class Drivetrain extends SubsystemBase {
     private TalonFX left1;
     private TalonFX left2;
     private TalonFX left3;
+
+    private PigeonIMU pigeon;
+    private double initialAngle;
+
+    static final double pid_p = 0;
+    static final double pid_i = 0;
+    static final double pid_d = 0;
 
     /**
      * The getter for the Drivetrain class.
@@ -35,7 +44,8 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private Drivetrain() {
-        // setDefaultCommand(new DriveWithJoystick());
+        super(new PIDController(RobotMap.DRIVETRAIN_ANG_PID_GAINS.kP, RobotMap.DRIVETRAIN_ANG_PID_GAINS.kI, RobotMap.DRIVETRAIN_ANG_PID_GAINS.kD));
+        getController().setTolerance(0.1, 0.1);
 
         this.right1 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1);
         this.right2 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_2);
@@ -44,7 +54,7 @@ public class Drivetrain extends SubsystemBase {
         this.left2 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_LEFT_2);
         this.left3 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_LEFT_3);
 
-        setNeutralMode(NeutralMode.Coast);
+        setNeutralMode(NeutralMode.Brake);
 
         this.right1.setInverted(true);
         this.right2.setInverted(true);
@@ -59,6 +69,46 @@ public class Drivetrain extends SubsystemBase {
         this.right1.setSensorPhase(RobotMap.DRIVETRAIN_RIGHT_ENCODER_PHASE);
         this.left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         this.left1.setSensorPhase(RobotMap.DRIVETRAIN_LEFT_ENCODER_PHASE);
+    }
+
+    public double getPigeonAngle() {
+        return normalizeAngle(this.getPigeonYawRaw() - this.initialAngle);
+    }
+
+    private double normalizeAngle(double angle) {
+        return leastResidue(angle, 360.0D);
+    }
+
+    private double leastResidue(double n, double modulus) throws IllegalArgumentException {
+        if (modulus <= 0.0D) {
+            throw new IllegalArgumentException("Modulus cannot be less than or equal to zero.");
+        } else {
+            return (n % modulus + modulus) % modulus;
+        }
+    }
+
+    public void resetPigeonYaw() {
+        this.initialAngle = this.getPigeonYawRaw();
+    }
+
+    public void setPigeonYaw(double angle) {
+        this.initialAngle = this.getPigeonYawRaw() + angle;
+    }
+
+    private double getPigeonYawRaw() {
+        double[] ypr = new double[3];
+        this.pigeon.getYawPitchRoll(ypr);
+        return ypr[0] * -1.0D;
+    }
+
+    @Override
+    protected double getMeasurement() {
+        return getPigeonAngle();
+    }
+
+    @Override
+    protected void useOutput(double output, double setpoint) {
+
     }
 
     public void setNeutralMode(NeutralMode mode) {

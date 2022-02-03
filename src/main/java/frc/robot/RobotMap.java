@@ -28,6 +28,7 @@ public class RobotMap {
 
     // Buttons and axes
     public static final int DRIVE_RESET_NORTH_BUTTON = 7;
+    public static final int DRIVE_TURN_90_BUTTON = 6;
     /*
     public static final int DRIVE_NORTH_UP_BUTTON = 10;
     public static final int DRIVE_OWN_SHIP_UP_BUTTON = 12;

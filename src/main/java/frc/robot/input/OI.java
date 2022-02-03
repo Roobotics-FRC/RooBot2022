@@ -1,9 +1,13 @@
 package frc.robot.input;
 
 
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.RobotMap;
 import frc.robot.input.filters.DummyFilter;
 import frc.robot.input.filters.LogitechFilter;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * OI provides access to operator interface devices.
@@ -12,6 +16,7 @@ public final class OI {
     private static volatile OI oi = null;
     private RooJoystick driveJoystick;
     private RooJoystick operatorJoystick;
+    private JoystickButton turn90DegreesButton;
 
     private OI() {
         this.driveJoystick = new RooJoystick(RobotMap.DRIVE_JOYSTICK_PORT,
@@ -22,6 +27,9 @@ public final class OI {
                 new DummyFilter(), 0);
         this.operatorJoystick = new RooJoystick(RobotMap.OPERATOR_JOYSTICK_PORT,
                 new DummyFilter(), 0);
+        this.turn90DegreesButton = new JoystickButton(this.driveJoystick,
+                RobotMap.DRIVE_TURN_90_BUTTON);
+        this.turn90DegreesButton.whenPressed(new InstantCommand(Drivetrain.getInstance()::enable, Drivetrain.getInstance()));
     }
 
     /**
