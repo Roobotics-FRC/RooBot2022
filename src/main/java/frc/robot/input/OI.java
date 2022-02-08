@@ -1,13 +1,11 @@
 package frc.robot.input;
 
 
-import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.RobotMap;
+import frc.robot.commands.DriveTurnToAngle;
 import frc.robot.input.filters.DummyFilter;
 import frc.robot.input.filters.LogitechFilter;
-import frc.robot.subsystems.Drivetrain;
 
 /**
  * OI provides access to operator interface devices.
@@ -29,7 +27,7 @@ public final class OI {
                 new DummyFilter(), 0);
         this.turn90DegreesButton = new JoystickButton(this.driveJoystick,
                 RobotMap.DRIVE_TURN_90_BUTTON);
-        this.turn90DegreesButton.whenPressed(new InstantCommand(Drivetrain.getInstance()::enable, Drivetrain.getInstance()));
+        this.turn90DegreesButton.whenPressed(new DriveTurnToAngle(90));
     }
 
     /**

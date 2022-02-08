@@ -1,15 +1,37 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveTurnToAngle extends PIDCommand {
+public class DriveTurnToAngle extends CommandBase {
     public Drivetrain drivetrain;
+    private boolean finished = false;
+    private double angle;
     
-    // public DriveTurnToAngle(double targetAngle) {
-    //     super(new PIDController(RobotMap.DRIVETRAIN_ANG_PID_GAINS.kP, RobotMap.DRIVETRAIN_ANG_PID_GAINS.kI, RobotMap.DRIVETRAIN_ANG_PID_GAINS.kD), arg1, arg2, arg3, arg4)
-    //     addRequirements(this.drivetrain = Drivetrain.getInstance());
-    // }
+    public DriveTurnToAngle(double angle) {
+        addRequirements(this.drivetrain = Drivetrain.getInstance());
+        this.angle = angle;
+    }
+
+    @Override
+    public void initialize() {
+        drivetrain.enable();
+        drivetrain.setSetpoint(angle);
+    }
+
+    @Override
+    public void execute() {
+        finished = drivetrain.getController().atSetpoint();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        drivetrain.stop();
+    }
+
+    @Override
+    public boolean isFinished() {
+        drivetrain.disable();
+        return finished;
+    }
 }

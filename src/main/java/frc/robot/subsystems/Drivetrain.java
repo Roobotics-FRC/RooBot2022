@@ -6,8 +6,10 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.RobotMap;
 
@@ -47,18 +49,22 @@ public class Drivetrain extends PIDSubsystem {
         super(new PIDController(RobotMap.DRIVETRAIN_ANG_PID_GAINS.kP, RobotMap.DRIVETRAIN_ANG_PID_GAINS.kI, RobotMap.DRIVETRAIN_ANG_PID_GAINS.kD));
         getController().setTolerance(0.1, 0.1);
 
-        this.right1 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1);
-        this.right2 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_2);
-        this.right3 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_3);
-        this.left1 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_LEFT_1);
-        this.left2 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_LEFT_2);
-        this.left3 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_LEFT_3);
+        this.right1 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1.id);
+        this.right2 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_2.id);
+        this.right3 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_3.id);
+        this.left1 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_LEFT_1.id);
+        this.left2 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_LEFT_2.id);
+        this.left3 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_LEFT_3.id);
 
         setNeutralMode(NeutralMode.Brake);
 
-        this.right1.setInverted(true);
-        this.right2.setInverted(true);
-        this.right3.setInverted(true);
+        this.right1.setInverted(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1.inverted);
+        this.right2.setInverted(RobotMap.DRIVETRAIN_MOTOR_RIGHT_2.inverted);
+        this.right3.setInverted(RobotMap.DRIVETRAIN_MOTOR_RIGHT_3.inverted);
+        
+        this.left1.setInverted(RobotMap.DRIVETRAIN_MOTOR_LEFT_1.inverted);
+        this.left2.setInverted(RobotMap.DRIVETRAIN_MOTOR_LEFT_2.inverted);
+        this.left3.setInverted(RobotMap.DRIVETRAIN_MOTOR_LEFT_3.inverted);  
 
         this.right2.follow(right1);
         this.right3.follow(right1);
@@ -66,9 +72,14 @@ public class Drivetrain extends PIDSubsystem {
         this.left3.follow(left1);
 
         this.right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        this.right1.setSensorPhase(RobotMap.DRIVETRAIN_RIGHT_ENCODER_PHASE);
+        this.right1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1.encoderPhase);
         this.left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        this.left1.setSensorPhase(RobotMap.DRIVETRAIN_LEFT_ENCODER_PHASE);
+        this.left1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_LEFT_1.encoderPhase);
+
+        pigeon = new WPI_PigeonIMU(RobotMap.PIGEON_ID);
+
+        getController().setTolerance(5);
+        getController().enableContinuousInput(0, 360);
     }
 
     public double getPigeonAngle() {
@@ -108,7 +119,11 @@ public class Drivetrain extends PIDSubsystem {
 
     @Override
     protected void useOutput(double output, double setpoint) {
-
+        double outputConstrained = RobotMap.constrainPercentOutput(output);
+        setRight(-outputConstrained);
+        setLeft(outputConstrained);
+        SmartDashboard.putNumber("DrivePIDOutput", outputConstrained);
+        SmartDashboard.putNumber("DrivePIDSetPoint", setpoint);
     }
 
     public void setNeutralMode(NeutralMode mode) {
@@ -140,9 +155,5 @@ public class Drivetrain extends PIDSubsystem {
         right1.set(ControlMode.PercentOutput, 0);
         right2.set(ControlMode.PercentOutput, 0);
         right3.set(ControlMode.PercentOutput, 0);
-    }
-
-    public void logToSmartDashboard() {
-
     }
 }
