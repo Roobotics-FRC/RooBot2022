@@ -32,7 +32,7 @@ public class RobotMap {
     public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(21, false, true);
     public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(22, false, false);
 
-    public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.009, 0, 0.008);
+    public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.005, 0, 0);
 
     // Constants
     public static final double DRIVE_ENCODER_COUNTS_PER_REV = 4096;
@@ -119,5 +119,8 @@ public class RobotMap {
 
     public static double constrainPercentOutput(double input) {
         return Math.max(Math.min(input, 1), -1);
+    }
+    public static double pidConstrainPercentOutput(double input) {
+        return Math.max(Math.min(input, 0.5), -0.5);
     }
 }

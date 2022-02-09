@@ -27,7 +27,7 @@ public final class OI {
                 new DummyFilter(), 0);
         this.turn90DegreesButton = new JoystickButton(this.driveJoystick,
                 RobotMap.DRIVE_TURN_90_BUTTON);
-        this.turn90DegreesButton.whenPressed(new DriveTurnToAngle(90));
+        this.turn90DegreesButton.whenPressed(new DriveTurnToAngle(0, 100));
     }
 
     /**

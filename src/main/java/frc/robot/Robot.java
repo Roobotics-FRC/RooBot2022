@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.CameraDefaultCommand;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.ShooterShootCommand;
+import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shooter;
 
@@ -32,9 +34,11 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     pdp = new PowerDistribution();
     Drivetrain.getInstance();
-    Shooter.getInstance();
+    // Shooter.getInstance();
+    Camera.getInstance();
+    CommandScheduler.getInstance().setDefaultCommand(Camera.getInstance(), new CameraDefaultCommand());
     CommandScheduler.getInstance().setDefaultCommand(Drivetrain.getInstance(), new DriveWithJoystick());
-    CommandScheduler.getInstance().setDefaultCommand(Shooter.getInstance(), new ShooterShootCommand());
+    // CommandScheduler.getInstance().setDefaultCommand(Shooter.getInstance(), new ShooterShootCommand());
     Thread.currentThread().setPriority(2);
   }
 

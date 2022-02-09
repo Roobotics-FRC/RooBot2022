@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -71,14 +73,14 @@ public class Drivetrain extends PIDSubsystem {
         this.left2.follow(left1);
         this.left3.follow(left1);
 
-        this.right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        this.right1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1.encoderPhase);
-        this.left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        this.left1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_LEFT_1.encoderPhase);
+        // this.right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        // this.right1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1.encoderPhase);
+        // this.left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        // this.left1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_LEFT_1.encoderPhase);
 
         pigeon = new WPI_PigeonIMU(RobotMap.PIGEON_ID);
 
-        getController().setTolerance(5);
+        getController().setTolerance(5, 10);
         getController().enableContinuousInput(0, 360);
     }
 
@@ -119,11 +121,12 @@ public class Drivetrain extends PIDSubsystem {
 
     @Override
     protected void useOutput(double output, double setpoint) {
-        double outputConstrained = RobotMap.constrainPercentOutput(output);
-        setRight(-outputConstrained);
-        setLeft(outputConstrained);
+        double outputConstrained = RobotMap.pidConstrainPercentOutput(output);
+        setRight(outputConstrained);
+        setLeft(-outputConstrained);
         SmartDashboard.putNumber("DrivePIDOutput", outputConstrained);
         SmartDashboard.putNumber("DrivePIDSetPoint", setpoint);
+        
     }
 
     public void setNeutralMode(NeutralMode mode) {
