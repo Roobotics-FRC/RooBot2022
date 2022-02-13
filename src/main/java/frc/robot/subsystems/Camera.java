@@ -51,7 +51,7 @@ public class Camera extends SubsystemBase {
 
     public void startStream() {
       UsbCamera camera = CameraServer.startAutomaticCapture();
-      camera.setResolution(300, 300);
+      camera.setResolution(500, 500);
     }
 
     public void startProcessingStream() {

@@ -7,6 +7,6 @@ package frc.robot.input.filters;
 public class LogitechFilter extends DoubleTypeFilter {
     @Override
     public Double applyFilter(Double input) {
-        return Math.copySign(Math.pow(input, 2), input);
+        return Math.copySign(0.05 + Math.pow(input, 4), input);
     }
 }

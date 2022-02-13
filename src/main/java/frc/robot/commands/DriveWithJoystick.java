@@ -19,19 +19,27 @@ public class DriveWithJoystick extends CommandBase {
 
     @Override
     public void execute() {
-        double y = -OI.getInstance().getDriveJoystick().rooGetY();
-        double z = OI.getInstance().getDriveJoystick().rooGetZ();
+        // double y = -OI.getInstance().getDriveJoystick().rooGetY();
+        // double z = OI.getInstance().getDriveJoystick().rooGetZ();
 
-        boolean slowMode = OI.getInstance().getDriveJoystick().getRawButton(RobotMap.DRIVE_SLOWER_SPEED_BUTTON);
+        boolean brake = OI.getInstance().getRightDriveJoystick().getRawButton(RobotMap.DRIVE_SLOWER_SPEED_BUTTON) || OI.getInstance().getLeftDriveJoystick().getRawButton(RobotMap.DRIVE_SLOWER_SPEED_BUTTON);
         
-        z = z * (-OI.getInstance().getDriveJoystick().rooGetThrottle() + 1) / 2;
+        // z = z * (-OI.getInstance().getDriveJoystick().rooGetThrottle() + 1) / 2;
 
-        if (slowMode) {
-            y = y/4;
-            z = z/4;
+        // 
+        // drivetrain.setRight(y - z);
+        // drivetrain.setLeft(y + z);
+
+        double y1 = -OI.getInstance().getRightDriveJoystick().rooGetY();
+        double y2 = -OI.getInstance().getLeftDriveJoystick().rooGetY();
+
+        if (brake) {
+            y1 = 0;
+            y2 = 0;
         }
-        drivetrain.setRight(y - z);
-        drivetrain.setLeft(y + z);
+
+        drivetrain.setRight(y1);
+        drivetrain.setLeft(y2);
     }
 
     @Override

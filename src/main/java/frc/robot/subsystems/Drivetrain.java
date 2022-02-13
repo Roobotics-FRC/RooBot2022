@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
-import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -78,7 +77,7 @@ public class Drivetrain extends PIDSubsystem {
         // this.left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         // this.left1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_LEFT_1.encoderPhase);
 
-        pigeon = new WPI_PigeonIMU(RobotMap.PIGEON_ID);
+        pigeon = new PigeonIMU(RobotMap.PIGEON_ID);
 
         getController().setTolerance(5, 10);
         getController().enableContinuousInput(0, 360);

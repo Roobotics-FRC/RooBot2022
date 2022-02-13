@@ -31,18 +31,18 @@ public class Shooter extends SubsystemBase {
     }
 
     private Shooter() {
-        motor1 = new WPI_TalonSRX(RobotMap.SHOOTER_MOTOR_1.id);
-        motor2 = new WPI_TalonSRX(RobotMap.SHOOTER_MOTOR_2.id);
-        motor2.follow(motor1);
+        // motor1 = new WPI_TalonSRX(RobotMap.SHOOTER_MOTOR_1.id);
+        // motor2 = new WPI_TalonSRX(RobotMap.SHOOTER_MOTOR_2.id);
+        // motor2.follow(motor1);
 
-        motor1.setNeutralMode(NeutralMode.Coast);
-        motor2.setNeutralMode(NeutralMode.Coast);
+        // motor1.setNeutralMode(NeutralMode.Coast);
+        // motor2.setNeutralMode(NeutralMode.Coast);
 
-        motor1.setInverted(RobotMap.SHOOTER_MOTOR_1.inverted);
-        motor2.setInverted(RobotMap.SHOOTER_MOTOR_2.inverted);
+        // motor1.setInverted(RobotMap.SHOOTER_MOTOR_1.inverted);
+        // motor2.setInverted(RobotMap.SHOOTER_MOTOR_2.inverted);
 
-        motor1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        motor1.setSensorPhase(RobotMap.SHOOTER_MOTOR_1.encoderPhase);
+        // motor1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        // motor1.setSensorPhase(RobotMap.SHOOTER_MOTOR_1.encoderPhase);
     }
 
     public void setSpeed(double speed) {

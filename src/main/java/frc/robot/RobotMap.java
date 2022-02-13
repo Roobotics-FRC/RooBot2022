@@ -11,12 +11,13 @@ public class RobotMap {
 
     // Button Ids
     public static final int TEST_SHOOTER = 11;
-    public static final int CAMERA_PROCESS_BUTTON = 12;
-    public static final int DRIVE_TURN_90_BUTTON = 6;
-    public static final int DRIVE_SLOWER_SPEED_BUTTON = 2;
+    public static final int TEST_INTAKE = 12;
+    public static final int DRIVE_TURN_90_BUTTON = 2;
+    public static final int DRIVE_SLOWER_SPEED_BUTTON = 1;
 
     // OI devices
-    public static final int DRIVE_JOYSTICK_PORT = 0;
+    public static final int LEFT_DRIVE_JOYSTICK_PORT = 0;
+    public static final int RIGHT_DRIVE_JOYSTICK_PORT = 1;
     public static final int OPERATOR_JOYSTICK_PORT = 1;
     public static final double JOYSTICK_DEFAULT_DEADZONE = 0.09;
     public static final int PIGEON_ID = 19;
@@ -32,7 +33,10 @@ public class RobotMap {
     public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(21, false, true);
     public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(22, false, false);
 
-    public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.005, 0, 0);
+    public static final MotorConfig INTAKE_MOTOR_1 = new MotorConfig(31, false, true);
+    public static final MotorConfig INTAKE_MOTOR_2 = new MotorConfig(32, false, false);
+
+    public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.02, 0.04, 0);
 
     // Constants
     public static final double DRIVE_ENCODER_COUNTS_PER_REV = 4096;
