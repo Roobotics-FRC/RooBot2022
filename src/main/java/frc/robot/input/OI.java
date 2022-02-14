@@ -14,34 +14,18 @@ import frc.robot.input.filters.LogitechFilter;
  */
 public final class OI {
     private static volatile OI oi = null;
-    // private RooJoystick leftDriveJoystick;
-    // private RooJoystick rightDriveJoystick;
     private RooJoystick cyleController;
-    // private RooJoystick operatorJoystick;
-    // private JoystickButton turn90DegreesButton;
+    private RooJoystick operatorController;
+    private JoystickButton turn90DegreesButton;
 
     private OI() {
-        // this.leftDriveJoystick = new RooJoystick(RobotMap.LEFT_DRIVE_JOYSTICK_PORT,
-        //         new LogitechFilter(), 0.01);
-        // leftDriveJoystick.configureAxis(leftDriveJoystick.getZChannel(),
-        //         new LogitechFilter(), 0.01);
-        // leftDriveJoystick.configureAxis(leftDriveJoystick.getThrottleChannel(),
-        //         new DummyFilter(), 0);
-
-        // this.rightDriveJoystick = new RooJoystick(RobotMap.RIGHT_DRIVE_JOYSTICK_PORT,
-        //         new LogitechFilter(), 0.01);
-        // rightDriveJoystick.configureAxis(rightDriveJoystick.getZChannel(),
-        //         new LogitechFilter(), 0.01);
-        // rightDriveJoystick.configureAxis(rightDriveJoystick.getThrottleChannel(),
-        //         new DummyFilter(), 0);
-
         this.cyleController = new RooJoystick(RobotMap.CYCLE_CONTROLLER_PORT, new LogitechFilter(), 0.01);
 
-        // this.operatorJoystick = new RooJoystick(RobotMap.OPERATOR_JOYSTICK_PORT,
-        //         new DummyFilter(), 0);
-        // this.turn90DegreesButton = new JoystickButton(this.rightDriveJoystick,
-        //         RobotMap.DRIVE_TURN_90_BUTTON);
-        // this.turn90DegreesButton.whenPressed(new DriveTurnToAngle(90, 100, true));
+        this.operatorController = new RooJoystick(RobotMap.OPERATOR_CONTROLLER_PORT,
+                new DummyFilter(), 0);
+        this.turn90DegreesButton = new JoystickButton(this.operatorController,
+                RobotMap.DRIVE_TURN_90_BUTTON);
+        this.turn90DegreesButton.whenPressed(new DriveTurnToAngle(90, 100, true));
     }
 
     /**
@@ -60,31 +44,19 @@ public final class OI {
         return oi;
     }
 
-    // /**
-    //  * Gets the left drive joystick controlling the robot.
-    //  * @return The left drive joystick controlling the robot.
-    //  */
-    // public RooJoystick getLeftDriveJoystick() {
-    //     return this.leftDriveJoystick;
-    // }
-
-    // /**
-    //  * Gets the right drive joystick controlling the robot.
-    //  * @return The right drive joystick controlling the robot.
-    //  */
-    // public RooJoystick getRightDriveJoystick() {
-    //     return this.rightDriveJoystick;
-    // }
-
+    /**
+     * Gets the drive controller controlling the robot.
+     * @return The drive controller controlling the robot.
+     */
     public RooJoystick getCyleController() {
         return this.cyleController;
     }
 
-    // /**
-    //  * Gets the operator joystick controlling the robot.
-    //  * @return The operator joystick controlling the robot.
-    //  */
-    // public RooJoystick getOperatorJoystick() {
-    //     return this.operatorJoystick;
-    // }
+    /**
+     * Gets the operator controller controlling the robot.
+     * @return The operator controller controlling the robot.
+     */
+    public RooJoystick getOperatorController() {
+        return this.operatorController;
+    }
 }

@@ -49,8 +49,8 @@ public class Shooter extends SubsystemBase {
 
         feederMotor.setInverted(RobotMap.SHOOTER_FEEDER_MOTOR.inverted);
 
-        motor1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        motor1.setSensorPhase(RobotMap.SHOOTER_MOTOR_1.encoderPhase);
+        motor2.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        motor2.setSensorPhase(RobotMap.SHOOTER_MOTOR_1.encoderPhase);
     }
 
     public void setSpeed(double speed) {
@@ -59,11 +59,15 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getVelocity() {
-        return motor1.getSelectedSensorVelocity();
+        return motor2.getSelectedSensorVelocity();
     }
 
     public void feed() {
         feederMotor.set(ControlMode.PercentOutput, 0.5);
+    }
+
+    public void stopFeeder() {
+        feederMotor.set(ControlMode.PercentOutput, 0);
     }
 
     public void stop() {

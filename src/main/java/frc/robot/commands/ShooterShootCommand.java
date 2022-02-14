@@ -16,18 +16,21 @@ public class ShooterShootCommand extends CommandBase {
     @Override
     public void initialize() {
         shooter.stop();
+        SmartDashboard.putNumber("SHOOTERSPEED", 0);
     }
 
     @Override
     public void execute() {
-        // double speed = (-OI.getInstance().getDriveJoystick().getThrottle() + 1) / 2;
-        // if (OI.getInstance().getDriveJoystick().getRawButton(RobotMap.TEST_SHOOTER)) {
-        //     shooter.setSpeed(-speed);
-        // } else {
-        //     shooter.setSpeed(0);
-        // }
-        // SmartDashboard.putNumber("ShooterSpeed", speed);
-        // SmartDashboard.putNumber("ShooterVelocity", shooter.getVelocity());
+        // double speed = (-OI.getInstance().getCyleController().getAxis(2) + 1) / 2;
+        double speed = SmartDashboard.getNumber("SHOOTERSPEED", 0);
+        if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_BUTTON)) {
+            shooter.setSpeed(speed);
+            shooter.feed();
+        } else {
+            shooter.setSpeed(0);
+            shooter.stopFeeder();
+        }
+        SmartDashboard.putNumber("ShooterVelocity", shooter.getVelocity());
     }
 
     @Override

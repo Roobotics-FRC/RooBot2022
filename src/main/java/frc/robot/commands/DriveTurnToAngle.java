@@ -49,7 +49,7 @@ public class DriveTurnToAngle extends CommandBase {
     @Override
     public boolean isFinished() {
         // return Math.abs(angle - drivetrain.getPigeonAngle()) < 2;
-        // return false;
-        return OI.getInstance().getLeftDriveJoystick().getRawButtonPressed(RobotMap.DRIVE_TURN_90_BUTTON);
+        return false;
+        // return OI.getInstance().getLeftDriveJoystick().getRawButtonPressed(RobotMap.DRIVE_TURN_90_BUTTON);
     }
 }

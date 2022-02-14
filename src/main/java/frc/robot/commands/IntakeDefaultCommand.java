@@ -19,11 +19,11 @@ public class IntakeDefaultCommand extends CommandBase {
 
     @Override
     public void execute() {
-        // if (OI.getInstance().getDriveJoystick().getRawButton(RobotMap.TEST_INTAKE)) {
-        //     intake.startIntake();
-        // } else {
-        //     intake.stopIntake();
-        // }
+        if (OI.getInstance().getOperatorController().getRawButton(RobotMap.INTAKE_INTAKE_BUTTON)) {
+            intake.startIntake();
+        } else {
+            intake.stopIntake();
+        }
     }
 
     @Override

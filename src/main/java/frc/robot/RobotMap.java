@@ -10,8 +10,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 public class RobotMap {
 
     // Button Ids
-    public static final int TEST_SHOOTER = 11;
-    public static final int TEST_INTAKE = 12;
+    public static final int SHOOTER_SHOOT_BUTTON = 1;
+    public static final int INTAKE_INTAKE_BUTTON = 12;
     public static final int DRIVE_TURN_90_BUTTON = 2;
     public static final int DRIVE_SLOWER_SPEED_BUTTON = 1;
 
@@ -19,7 +19,7 @@ public class RobotMap {
     public static final int LEFT_DRIVE_JOYSTICK_PORT = 0;
     public static final int RIGHT_DRIVE_JOYSTICK_PORT = 1;
     public static final int CYCLE_CONTROLLER_PORT = 0;
-    public static final int OPERATOR_JOYSTICK_PORT = 1;
+    public static final int OPERATOR_CONTROLLER_PORT = 1;
     public static final double JOYSTICK_DEFAULT_DEADZONE = 0.09;
     public static final int PIGEON_ID = 19;
 
@@ -31,9 +31,9 @@ public class RobotMap {
     public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_2 = new MotorConfig(14, false, false);
     public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_3 = new MotorConfig(15, false, false);
 
-    public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(21, false, true);
-    public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(22, false, false);
-    public static final MotorConfig SHOOTER_FEEDE_MOTOR = new MotorConfig(23, false, true);
+    public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(21, true, false);
+    public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(22, true, true);
+    public static final MotorConfig SHOOTER_FEEDER_MOTOR = new MotorConfig(23, false, true);
 
     public static final MotorConfig INTAKE_MOTOR_1 = new MotorConfig(31, false, true);
     public static final MotorConfig INTAKE_MOTOR_2 = new MotorConfig(32, false, false);
