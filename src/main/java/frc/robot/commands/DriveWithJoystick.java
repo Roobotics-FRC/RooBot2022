@@ -22,7 +22,7 @@ public class DriveWithJoystick extends CommandBase {
         // double y = -OI.getInstance().getDriveJoystick().rooGetY();
         // double z = OI.getInstance().getDriveJoystick().rooGetZ();
 
-        boolean brake = OI.getInstance().getRightDriveJoystick().getRawButton(RobotMap.DRIVE_SLOWER_SPEED_BUTTON) || OI.getInstance().getLeftDriveJoystick().getRawButton(RobotMap.DRIVE_SLOWER_SPEED_BUTTON);
+        // boolean brake = OI.getInstance().getRightDriveJoystick().getRawButton(RobotMap.DRIVE_SLOWER_SPEED_BUTTON) || OI.getInstance().getLeftDriveJoystick().getRawButton(RobotMap.DRIVE_SLOWER_SPEED_BUTTON);
         
         // z = z * (-OI.getInstance().getDriveJoystick().rooGetThrottle() + 1) / 2;
 
@@ -30,13 +30,13 @@ public class DriveWithJoystick extends CommandBase {
         // drivetrain.setRight(y - z);
         // drivetrain.setLeft(y + z);
 
-        double y1 = -OI.getInstance().getRightDriveJoystick().rooGetY();
-        double y2 = -OI.getInstance().getLeftDriveJoystick().rooGetY();
+        double y1 = -OI.getInstance().getCyleController().getAxis(1);
+        double y2 = -OI.getInstance().getCyleController().getAxis(0);
 
-        if (brake) {
-            y1 = 0;
-            y2 = 0;
-        }
+        // if (brake) {
+        //     y1 = 0;
+        //     y2 = 0;
+        // }
 
         drivetrain.setRight(y1);
         drivetrain.setLeft(y2);

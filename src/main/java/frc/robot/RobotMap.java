@@ -18,6 +18,7 @@ public class RobotMap {
     // OI devices
     public static final int LEFT_DRIVE_JOYSTICK_PORT = 0;
     public static final int RIGHT_DRIVE_JOYSTICK_PORT = 1;
+    public static final int CYCLE_CONTROLLER_PORT = 0;
     public static final int OPERATOR_JOYSTICK_PORT = 1;
     public static final double JOYSTICK_DEFAULT_DEADZONE = 0.09;
     public static final int PIGEON_ID = 19;
@@ -32,6 +33,7 @@ public class RobotMap {
 
     public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(21, false, true);
     public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(22, false, false);
+    public static final MotorConfig SHOOTER_FEEDE_MOTOR = new MotorConfig(23, false, true);
 
     public static final MotorConfig INTAKE_MOTOR_1 = new MotorConfig(31, false, true);
     public static final MotorConfig INTAKE_MOTOR_2 = new MotorConfig(32, false, false);

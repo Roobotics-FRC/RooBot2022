@@ -38,13 +38,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     pdp = new PowerDistribution();
     Drivetrain.getInstance();
-    // Shooter.getInstance();
+    Shooter.getInstance();
     Camera.getInstance();
     // Intake.getInstance();
     CommandScheduler.getInstance().setDefaultCommand(Camera.getInstance(), new CameraDefaultCommand());
     // CommandScheduler.getInstance().setDefaultCommand(Intake.getInstance(), new IntakeDefaultCommand());
     CommandScheduler.getInstance().setDefaultCommand(Drivetrain.getInstance(), new DriveWithJoystick());
-    // CommandScheduler.getInstance().setDefaultCommand(Shooter.getInstance(), new ShooterShootCommand());
+    CommandScheduler.getInstance().setDefaultCommand(Shooter.getInstance(), new ShooterShootCommand());
     // Thread.currentThread().setPriority(2);
   }
 

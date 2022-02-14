@@ -15,6 +15,8 @@ public class Shooter extends SubsystemBase {
     private WPI_TalonSRX motor1;
     private WPI_TalonSRX motor2;
 
+    private WPI_TalonSRX feederMotor;
+
     /**
      * The getter for the Drivetrain class.
      * @return the singleton Drivetrain object.
@@ -31,18 +33,24 @@ public class Shooter extends SubsystemBase {
     }
 
     private Shooter() {
-        // motor1 = new WPI_TalonSRX(RobotMap.SHOOTER_MOTOR_1.id);
-        // motor2 = new WPI_TalonSRX(RobotMap.SHOOTER_MOTOR_2.id);
-        // motor2.follow(motor1);
+        motor1 = new WPI_TalonSRX(RobotMap.SHOOTER_MOTOR_1.id);
+        motor2 = new WPI_TalonSRX(RobotMap.SHOOTER_MOTOR_2.id);
+        motor2.follow(motor1);
 
-        // motor1.setNeutralMode(NeutralMode.Coast);
-        // motor2.setNeutralMode(NeutralMode.Coast);
+        feederMotor = new WPI_TalonSRX(RobotMap.SHOOTER_FEEDER_MOTOR.id);
 
-        // motor1.setInverted(RobotMap.SHOOTER_MOTOR_1.inverted);
-        // motor2.setInverted(RobotMap.SHOOTER_MOTOR_2.inverted);
+        motor1.setNeutralMode(NeutralMode.Coast);
+        motor2.setNeutralMode(NeutralMode.Coast);
 
-        // motor1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        // motor1.setSensorPhase(RobotMap.SHOOTER_MOTOR_1.encoderPhase);
+        feederMotor.setNeutralMode(NeutralMode.Coast);
+
+        motor1.setInverted(RobotMap.SHOOTER_MOTOR_1.inverted);
+        motor2.setInverted(RobotMap.SHOOTER_MOTOR_2.inverted);
+
+        feederMotor.setInverted(RobotMap.SHOOTER_FEEDER_MOTOR.inverted);
+
+        motor1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        motor1.setSensorPhase(RobotMap.SHOOTER_MOTOR_1.encoderPhase);
     }
 
     public void setSpeed(double speed) {
@@ -52,6 +60,10 @@ public class Shooter extends SubsystemBase {
 
     public double getVelocity() {
         return motor1.getSelectedSensorVelocity();
+    }
+
+    public void feed() {
+        feederMotor.set(ControlMode.PercentOutput, 0.5);
     }
 
     public void stop() {
