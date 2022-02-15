@@ -25,7 +25,7 @@ public class ShooterShootCommand extends CommandBase {
         double speed = SmartDashboard.getNumber("SHOOTERSPEED", 0);
         if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_BUTTON)) {
             shooter.setSpeed(speed);
-            shooter.feed();
+            // shooter.feed();
         } else {
             shooter.setSpeed(0);
             shooter.stopFeeder();
