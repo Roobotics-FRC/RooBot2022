@@ -28,7 +28,7 @@ public class ShooterShootCommand extends CommandBase {
             // shooter.feed();
         } else {
             shooter.setSpeed(0);
-            shooter.stopFeeder();
+            // shooter.stopFeeder();
         }
         SmartDashboard.putNumber("ShooterVelocity", shooter.getVelocity());
     }
