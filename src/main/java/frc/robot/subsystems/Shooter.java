@@ -49,25 +49,26 @@ public class Shooter extends SubsystemBase {
 
         feederMotor.setInverted(RobotMap.SHOOTER_FEEDER_MOTOR.inverted);
 
-        // motor2.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        // motor2.setSensorPhase(RobotMap.SHOOTER_MOTOR_1.encoderPhase);
+        motor1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        motor1.setSensorPhase(RobotMap.SHOOTER_MOTOR_1.encoderPhase);
+
+        motor1.config_kF(0, RobotMap.SHOOTER_PID_GAINS.kF);
+        motor1.config_kP(0, RobotMap.SHOOTER_PID_GAINS.kP);
+        motor1.config_kI(0, RobotMap.SHOOTER_PID_GAINS.kI);
+        motor1.config_kD(0, RobotMap.SHOOTER_PID_GAINS.kD);
     }
 
-    public void setSpeed(double speed) {
-        setMotor1(speed);
-        setMotor2(speed);
-    }
-
-    public void setMotor1(double speed) {
+    public void setPercentOutput(double speed) {
         motor1.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
     }
 
-    public void setMotor2(double speed) {
-        motor2.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
+    public void setVelocity(double speed) {
+        // Max looks like 100,000? Thats what it is in 2020
+        motor1.set(ControlMode.Velocity, speed);
     }
 
     public double getVelocity() {
-        return motor2.getSelectedSensorVelocity();
+        return motor1.getSelectedSensorVelocity();
     }
 
     public void feed() {
@@ -80,6 +81,5 @@ public class Shooter extends SubsystemBase {
 
     public void stop() {
         motor1.set(ControlMode.PercentOutput, 0);
-        motor2.set(ControlMode.PercentOutput, 0);
     }
 }

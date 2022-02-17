@@ -23,8 +23,8 @@ public final class OI {
 
         this.operatorController = new RooJoystick(RobotMap.OPERATOR_CONTROLLER_PORT,
                 new DummyFilter(), 0);
-        this.turn90DegreesButton = new JoystickButton(this.operatorController,
-                RobotMap.DRIVE_TURN_90_BUTTON);
+        this.turn90DegreesButton = new JoystickButton(this.cyleController,
+                RobotMap.DRIVE_TURN_TO_TARGET_BUTTON);
         this.turn90DegreesButton.whenPressed(new DriveTurnToAngle(90, 100, true));
     }
 

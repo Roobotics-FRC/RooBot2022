@@ -12,7 +12,8 @@ public class RobotMap {
     // Button Ids
     public static final int SHOOTER_SHOOT_BUTTON = 1;
     public static final int INTAKE_INTAKE_BUTTON = 12;
-    public static final int DRIVE_TURN_90_BUTTON = 2;
+    public static final int DRIVE_TURN_TO_TARGET_BUTTON = 13;
+    public static final int KILL_COMMANDS_BUTTON = 15;
     public static final int DRIVE_SLOWER_SPEED_BUTTON = 1;
 
     // OI devices
@@ -31,13 +32,15 @@ public class RobotMap {
     public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_2 = new MotorConfig(14, false, false);
     public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_3 = new MotorConfig(15, false, false);
 
-    public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(21, true, false);
-    public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(22, true, true);
+    public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(22, true, false);
+    public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(21, true, true);
     public static final MotorConfig SHOOTER_FEEDER_MOTOR = new MotorConfig(23, false, true);
 
     public static final MotorConfig INTAKE_MOTOR = new MotorConfig(31, false, true);
 
+    // PID GAINS
     public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.02, 0.04, 0);
+    public static final PID SHOOTER_PID_GAINS = new PID(0.01, 0.02, 0, 0);
 
     // Constants
     public static final double DRIVE_ENCODER_COUNTS_PER_REV = 4096;

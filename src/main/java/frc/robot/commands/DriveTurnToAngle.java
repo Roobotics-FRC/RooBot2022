@@ -32,9 +32,7 @@ public class DriveTurnToAngle extends CommandBase {
     public void initialize() {
         drivetrain.resetPigeonYaw();
         drivetrain.enable();
-        // drivetrain.setSetpoint(90);
         drivetrain.setSetpoint(-table.getEntry("tx").getDouble(0));
-
     }
 
     @Override
@@ -48,8 +46,8 @@ public class DriveTurnToAngle extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        // return Math.abs(angle - drivetrain.getPigeonAngle()) < 2;
-        return false;
-        // return OI.getInstance().getLeftDriveJoystick().getRawButtonPressed(RobotMap.DRIVE_TURN_90_BUTTON);
+        boolean killPressed = OI.getInstance().getCyleController().getRawButtonPressed(RobotMap.KILL_COMMANDS_BUTTON);
+        boolean inTolerance = Math.abs(angle - drivetrain.getPigeonAngle()) < 2;
+        return killPressed;
     }
 }
