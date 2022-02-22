@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Teleop;
 
 import org.opencv.features2d.AgastFeatureDetector;
 

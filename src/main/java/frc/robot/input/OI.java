@@ -5,7 +5,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.RobotMap;
-import frc.robot.commands.DriveTurnToAngle;
+import frc.robot.commands.Teleop.DriveTurnToAngle;
 import frc.robot.input.filters.DummyFilter;
 import frc.robot.input.filters.LogitechFilter;
 
