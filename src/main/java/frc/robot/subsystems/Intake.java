@@ -50,4 +50,8 @@ public class Intake extends SubsystemBase {
     public void deployIntake() {
         deploySolenoid.set(true);
     }
+
+    public void retractIntake() {
+        deploySolenoid.set(false);
+    }
 }
