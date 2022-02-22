@@ -4,19 +4,17 @@
 
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.CameraDefaultCommand;
-import frc.robot.commands.DriveWithJoystick;
-import frc.robot.commands.IntakeDefaultCommand;
-import frc.robot.commands.ShooterShootCommand;
-import frc.robot.input.OI;
+import frc.robot.commands.Teleop.CameraDefaultCommand;
+import frc.robot.commands.Teleop.DriveWithJoystick;
+import frc.robot.commands.Teleop.ShooterShootCommand;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -28,6 +26,7 @@ import frc.robot.subsystems.Shooter;
 public class Robot extends TimedRobot {
   // private Command m_autonomousCommand;
   private PowerDistribution pdp;
+  private Compressor compressor;
 
 
   /**
@@ -36,7 +35,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    
     pdp = new PowerDistribution();
+    this.compressor = new Compressor(RobotMap.COMPRESSOR_PORT, PneumaticsModuleType.CTREPCM);
+    compressor.enableDigital();
     Drivetrain.getInstance();
     Shooter.getInstance();
     Camera.getInstance();

@@ -23,6 +23,7 @@ public class RobotMap {
     public static final int OPERATOR_CONTROLLER_PORT = 1;
     public static final double JOYSTICK_DEFAULT_DEADZONE = 0.09;
     public static final int PIGEON_ID = 19;
+    public static final int COMPRESSOR_PORT = 2;
 
     // Motor Configs
     public static final MotorConfig DRIVETRAIN_MOTOR_RIGHT_1 = new MotorConfig(10, true, false);

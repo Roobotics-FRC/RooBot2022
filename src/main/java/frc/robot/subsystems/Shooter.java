@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -14,6 +15,8 @@ public class Shooter extends SubsystemBase {
 
     private WPI_TalonSRX motor1;
     private WPI_TalonSRX motor2;
+
+    private Solenoid angleSolenoid;
 
     private WPI_TalonSRX feederMotor;
 
@@ -77,6 +80,10 @@ public class Shooter extends SubsystemBase {
 
     public void stopFeeder() {
         feederMotor.set(ControlMode.PercentOutput, 0);
+    }
+
+    public void setShooterState(Boolean state) {
+        angleSolenoid.set(state);
     }
 
     public void stop() {
