@@ -72,10 +72,10 @@ public class Drivetrain extends PIDSubsystem {
         this.left2.follow(left1);
         this.left3.follow(left1);
 
-        // this.right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        // this.right1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1.encoderPhase);
-        // this.left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        // this.left1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_LEFT_1.encoderPhase);
+        this.right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        this.right1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1.encoderPhase);
+        this.left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        this.left1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_LEFT_1.encoderPhase);
 
         pigeon = new PigeonIMU(RobotMap.PIGEON_ID);
 
@@ -121,8 +121,8 @@ public class Drivetrain extends PIDSubsystem {
     @Override
     protected void useOutput(double output, double setpoint) {
         double outputConstrained = RobotMap.pidConstrainPercentOutput(output);
-        setRight(outputConstrained);
-        setLeft(-outputConstrained);
+        setRightPercentOutput(outputConstrained);
+        setLeftPercentOutput(-outputConstrained);
         SmartDashboard.putNumber("DrivePIDOutput", outputConstrained);
         SmartDashboard.putNumber("DrivePIDSetPoint", setpoint);
         
@@ -137,16 +137,38 @@ public class Drivetrain extends PIDSubsystem {
         this.left3.setNeutralMode(mode);
     }
 
-    public void setRight(double speed) {
+    public void setRightPercentOutput(double speed) {
         right1.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
-        right2.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
-        right3.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
     }
 
-    public void setLeft(double speed) {
+    public void setLeftPercentOutput(double speed) {
         left1.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
-        left2.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
-        left3.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
+    }
+
+    public void setRightVelocity(double speed) {
+        right1.set(ControlMode.Velocity, speed);
+    }
+
+    public void setLeftVelocity(double speed) {
+        right1.set(ControlMode.Velocity, speed);
+    }
+
+    public double getRightPositionInches() {
+        return (right1.getSelectedSensorPosition() / RobotMap.DRIVE_COUNTS_PER_REV) * RobotMap.DRIVE_WHEEL_CIRCUMFRENCE;
+    }
+
+    public double getLeftPositionInches() {
+        return (left1.getSelectedSensorPosition() / RobotMap.DRIVE_COUNTS_PER_REV) * RobotMap.DRIVE_WHEEL_CIRCUMFRENCE;
+    }
+
+    public void setDistanceRight(double position) {
+        double encoderUnits = (position / RobotMap.DRIVE_WHEEL_CIRCUMFRENCE) * RobotMap.DRIVE_COUNTS_PER_REV;
+        right1.set(ControlMode.Position, encoderUnits);
+    }
+
+    public void setDistanceLeft(double position) {
+        double encoderUnits = (position / RobotMap.DRIVE_WHEEL_CIRCUMFRENCE) * RobotMap.DRIVE_COUNTS_PER_REV;
+        left1.set(ControlMode.Position, encoderUnits);
     }
 
     public void stop() {

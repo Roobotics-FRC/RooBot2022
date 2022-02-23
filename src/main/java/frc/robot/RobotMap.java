@@ -41,10 +41,13 @@ public class RobotMap {
 
     // PID GAINS
     public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.02, 0.04, 0);
+    public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0.01, 0.02, 0, 0);
     public static final PID SHOOTER_PID_GAINS = new PID(0.01, 0.02, 0, 0);
 
     // Constants
-    public static final double DRIVE_ENCODER_COUNTS_PER_REV = 4096;
+    public static final double ENCODER_COUNTS_PER_REV = 4096;
+    public static final double DRIVE_COUNTS_PER_REV = 2048;
+    public static final double DRIVE_WHEEL_CIRCUMFRENCE = 6 * Math.PI;
 
     // Conversion factors
     // public static final double ENCODER_UNITS_TO_INCHES = DRIVE_WHEEL_DIAMETER_IN * Math.PI / DRIVE_ENCODER_COUNTS_PER_REV / DRIVE_GEARBOX_RATIO;

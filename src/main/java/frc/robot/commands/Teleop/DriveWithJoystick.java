@@ -23,16 +23,16 @@ public class DriveWithJoystick extends CommandBase {
         double y = OI.getInstance().getCyleController().getAxis(1);
         double z = OI.getInstance().getCyleController().getAxis(4);
 
-        drivetrain.setLeft(y + z);
-        drivetrain.setRight(y - z);
+        drivetrain.setLeftPercentOutput(y + z);
+        drivetrain.setRightPercentOutput(y - z);
 
 
         // CYLE CONTROL MARK I
         // double y1 = OI.getInstance().getCyleController().getAxis(1);
         // double y2 = OI.getInstance().getCyleController().getAxis(4);
 
-        // drivetrain.setLeft(y1);
-        // drivetrain.setRight(y2);
+        // drivetrain.setLeftPercentOutput(y1);
+        // drivetrain.setRightPercentOutput(y2);
     }
 
     @Override
