@@ -11,6 +11,8 @@ public class RobotMap {
 
     // Button Ids
     public static final int SHOOTER_SHOOT_BUTTON = 1;
+    public static final int SHOOTER_SHOOT_WITH_VISION_BUTTON = 2;
+    public static final int SHOOTER_FEED_BUTTON = 3;
     public static final int INTAKE_INTAKE_BUTTON = 12;
     public static final int DRIVE_TURN_TO_TARGET_BUTTON = 13;
     public static final int KILL_COMMANDS_BUTTON = 15;
