@@ -10,10 +10,14 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 public class RobotMap {
 
     // Button Ids
+    // OPERATOR CONTROLLER
     public static final int SHOOTER_SHOOT_BUTTON = 1;
     public static final int SHOOTER_SHOOT_WITH_VISION_BUTTON = 2;
     public static final int SHOOTER_FEED_BUTTON = 3;
     public static final int INTAKE_INTAKE_BUTTON = 12;
+    public static final int CLIMB_RAISE_BUTTON = 4;
+    public static final int CLIMB_LOWER_BUTTON = 5;
+    // CYLE CONTROLLER
     public static final int DRIVE_TURN_TO_TARGET_BUTTON = 13;
     public static final int KILL_COMMANDS_BUTTON = 15;
     public static final int DRIVE_SLOWER_SPEED_BUTTON = 1;
@@ -38,6 +42,9 @@ public class RobotMap {
     public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(22, true, false);
     public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(21, true, true);
     public static final MotorConfig SHOOTER_FEEDER_MOTOR = new MotorConfig(23, false, true);
+
+    public static final MotorConfig CLIMB_MOTOR_1 = new MotorConfig(41, true, false);
+    public static final MotorConfig CLIMB_MOTOR_2 = new MotorConfig(42, false, false);
 
     public static final MotorConfig INTAKE_MOTOR = new MotorConfig(31, false, true);
 
