@@ -78,6 +78,10 @@ public class Shooter extends SubsystemBase {
         feederMotor.set(ControlMode.PercentOutput, 0.5);
     }
 
+    public void reverseFeed() {
+        feederMotor.set(ControlMode.PercentOutput, -0.5);
+    }
+
     public void stopFeeder() {
         feederMotor.set(ControlMode.PercentOutput, 0);
     }

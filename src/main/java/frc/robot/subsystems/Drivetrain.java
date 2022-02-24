@@ -77,6 +77,16 @@ public class Drivetrain extends PIDSubsystem {
         this.left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         this.left1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_LEFT_1.encoderPhase);
 
+        right1.config_kF(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kF);
+        right1.config_kP(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kP);
+        right1.config_kI(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kI);
+        right1.config_kD(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kD);
+
+        left1.config_kF(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kF);
+        left1.config_kP(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kP);
+        left1.config_kI(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kI);
+        left1.config_kD(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kD);
+
         pigeon = new PigeonIMU(RobotMap.PIGEON_ID);
 
         getController().setTolerance(5, 10);

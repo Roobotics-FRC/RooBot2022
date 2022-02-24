@@ -2,6 +2,7 @@ package frc.robot.commands.Teleop;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMap;
@@ -27,21 +28,39 @@ public class ShooterShootCommand extends CommandBase {
         double speed = SmartDashboard.getNumber("SHOOTERSPEED", 0) * 100000;
         if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON)) {
             shooter.setVelocity(getShooterVelocityFromDistance(getDistanceFromYDist(table.getEntry("ty").getDouble(0))));
+            if (Math.abs(shooter.getVelocity() - getShooterVelocityFromDistance(getDistanceFromYDist(table.getEntry("ty").getDouble(0)))) < 1000) {
+                OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
+            } else {
+                OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
+            }
             if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_FEED_BUTTON)) {
                 shooter.feed();
+            } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_REVERSE_FEED_BUTTON)) {
+                shooter.reverseFeed();
             } else {
                 shooter.stopFeeder();
             }
         } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_BUTTON)) {
             shooter.setVelocity(speed);
+            if (Math.abs(shooter.getVelocity() - speed) < 1000) {
+                OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
+            } else {
+                OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
+            }
             if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_FEED_BUTTON)) {
                 shooter.feed();
+            } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_REVERSE_FEED_BUTTON)) {
+                shooter.reverseFeed();
             } else {
                 shooter.stopFeeder();
             }
         } else {
             shooter.stop();
-            shooter.stopFeeder();
+            if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_REVERSE_FEED_BUTTON)) {
+                shooter.reverseFeed();
+            } else {
+                shooter.stopFeeder();
+            }
         }
         SmartDashboard.putNumber("ShooterVelocity", shooter.getVelocity());
     }

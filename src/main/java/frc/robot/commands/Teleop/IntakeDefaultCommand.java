@@ -15,12 +15,15 @@ public class IntakeDefaultCommand extends CommandBase {
     @Override
     public void initialize() {
         intake.stopIntake();
+        intake.deployIntake();
     }
 
     @Override
     public void execute() {
-        if (OI.getInstance().getOperatorController().getRawButton(RobotMap.INTAKE_INTAKE_BUTTON)) {
+        if (OI.getInstance().getOperatorController().getRawAxis(RobotMap.INTAKE_INTAKE_AXIS) > 0.25) {
             intake.startIntake();
+        } else if (OI.getInstance().getOperatorController().getRawAxis(RobotMap.INTAKE_REVERSE_INTAKE_AXIS) > 0.25) {
+            intake.reverseIntake();
         } else {
             intake.stopIntake();
         }

@@ -11,10 +11,12 @@ public class RobotMap {
 
     // Button Ids
     // OPERATOR CONTROLLER
-    public static final int SHOOTER_SHOOT_BUTTON = 1;
-    public static final int SHOOTER_SHOOT_WITH_VISION_BUTTON = 2;
-    public static final int SHOOTER_FEED_BUTTON = 3;
-    public static final int INTAKE_INTAKE_BUTTON = 12;
+    public static final int SHOOTER_SHOOT_BUTTON = 2;
+    public static final int SHOOTER_SHOOT_WITH_VISION_BUTTON = 1;
+    public static final int SHOOTER_FEED_BUTTON = 5;
+    public static final int SHOOTER_REVERSE_FEED_BUTTON = 6;
+    public static final int INTAKE_INTAKE_AXIS = 2;
+    public static final int INTAKE_REVERSE_INTAKE_AXIS = 3;
     public static final int CLIMB_RAISE_BUTTON = 4;
     public static final int CLIMB_LOWER_BUTTON = 5;
     // CYLE CONTROLLER
