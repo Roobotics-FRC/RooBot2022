@@ -1,8 +1,5 @@
 package frc.robot.input;
 
-
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.RobotMap;
 import frc.robot.commands.Teleop.DriveTurnToAngle;
@@ -25,7 +22,7 @@ public final class OI {
                 new DummyFilter(), 0);
         this.turn90DegreesButton = new JoystickButton(this.cyleController,
                 RobotMap.DRIVE_TURN_TO_TARGET_BUTTON);
-        this.turn90DegreesButton.whenPressed(new DriveTurnToAngle(90, 100, true));
+        this.turn90DegreesButton.whenPressed(new DriveTurnToAngle());
     }
 
     /**

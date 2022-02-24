@@ -10,11 +10,12 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Teleop.CameraDefaultCommand;
 import frc.robot.commands.Teleop.DriveWithJoystick;
+import frc.robot.commands.Teleop.IntakeDefaultCommand;
 import frc.robot.commands.Teleop.ShooterShootCommand;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -35,19 +36,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    
     pdp = new PowerDistribution();
+
     this.compressor = new Compressor(RobotMap.COMPRESSOR_PORT, PneumaticsModuleType.CTREPCM);
     compressor.enableDigital();
+
     Drivetrain.getInstance();
     Shooter.getInstance();
     Camera.getInstance();
-    // Intake.getInstance();
-    CommandScheduler.getInstance().setDefaultCommand(Camera.getInstance(), new CameraDefaultCommand());
-    // CommandScheduler.getInstance().setDefaultCommand(Intake.getInstance(), new IntakeDefaultCommand());
+    Intake.getInstance();
+
+    CommandScheduler.getInstance().setDefaultCommand(Intake.getInstance(), new IntakeDefaultCommand());
     CommandScheduler.getInstance().setDefaultCommand(Drivetrain.getInstance(), new DriveWithJoystick());
     CommandScheduler.getInstance().setDefaultCommand(Shooter.getInstance(), new ShooterShootCommand());
-    // Thread.currentThread().setPriority(2);
   }
 
   /**
@@ -59,6 +60,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("BatteryValue", pdp.getVoltage());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -78,22 +80,21 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+
+  }
 
   @Override
   public void teleopInit() {
 //    if (m_autonomousCommand != null) {
 //      m_autonomousCommand.cancel();
 //    }
-
-
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("BatteryValue", pdp.getVoltage());
   }
 
   @Override
