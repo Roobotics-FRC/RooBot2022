@@ -62,7 +62,7 @@ public class RobotMap {
 
     // PID GAINS
     public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.02, 0.04, 0);
-    public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0, 0.015, 0, 0);
+    public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0, 0.005, 0, 0);
     public static final PID SHOOTER_PID_GAINS = new PID(0.025, 0.03, 0.0002, 0);
 
     // Constants

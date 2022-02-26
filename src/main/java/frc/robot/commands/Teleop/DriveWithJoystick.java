@@ -29,19 +29,11 @@ public class DriveWithJoystick extends CommandBase {
 
 
         // CYLE CONTROL MARK I
-        double y1 = filterCyleController(OI.getInstance().getCyleController().getAxis(1) * 2);
-        double y2 = filterCyleController(OI.getInstance().getCyleController().getAxis(4) * 2);
+        double y1 = OI.getInstance().getCyleController().getAxis(1);
+        double y2 = OI.getInstance().getCyleController().getAxis(4);
 
         drivetrain.setLeftPercentOutput(y1);
         drivetrain.setRightPercentOutput(y2);
-    }
-
-    private double filterCyleController(double value) {
-        if (Math.abs(value) < 0.15) {
-            return 0;
-        } else {
-            return value;
-        }
     }
 
     @Override
