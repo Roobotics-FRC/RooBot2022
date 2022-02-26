@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.Map;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -72,9 +70,9 @@ public class Drivetrain extends PIDSubsystem {
         this.left2.follow(left1);
         this.left3.follow(left1);
 
-        this.right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        this.right1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         this.right1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1.encoderPhase);
-        this.left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        this.left1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         this.left1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_LEFT_1.encoderPhase);
 
         right1.config_kF(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kF);
@@ -149,10 +147,14 @@ public class Drivetrain extends PIDSubsystem {
 
     public void setRightPercentOutput(double speed) {
         right1.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
+        right2.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
+        right3.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
     }
 
     public void setLeftPercentOutput(double speed) {
         left1.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
+        left2.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
+        left3.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
     }
 
     public void setRightVelocity(double speed) {
@@ -160,24 +162,24 @@ public class Drivetrain extends PIDSubsystem {
     }
 
     public void setLeftVelocity(double speed) {
-        right1.set(ControlMode.Velocity, speed);
+        left1.set(ControlMode.Velocity, speed);
     }
 
     public double getRightPositionInches() {
-        return (right1.getSelectedSensorPosition() / RobotMap.DRIVE_COUNTS_PER_REV) * RobotMap.DRIVE_WHEEL_CIRCUMFRENCE;
+        return (right1.getSelectedSensorPosition() * ((RobotMap.DRIVE_WHEEL_CIRCUMFRENCE)/(RobotMap.DRIVE_COUNTS_PER_REV * RobotMap.DRIVE_GEAR_RATIO)));
     }
 
     public double getLeftPositionInches() {
-        return (left1.getSelectedSensorPosition() / RobotMap.DRIVE_COUNTS_PER_REV) * RobotMap.DRIVE_WHEEL_CIRCUMFRENCE;
+        return (left1.getSelectedSensorPosition() * ((RobotMap.DRIVE_WHEEL_CIRCUMFRENCE)/(RobotMap.DRIVE_COUNTS_PER_REV * RobotMap.DRIVE_GEAR_RATIO)));
     }
 
     public void setDistanceRight(double position) {
-        double encoderUnits = (position / RobotMap.DRIVE_WHEEL_CIRCUMFRENCE) * RobotMap.DRIVE_COUNTS_PER_REV;
+        double encoderUnits = position * ((RobotMap.DRIVE_COUNTS_PER_REV * RobotMap.DRIVE_GEAR_RATIO) / (RobotMap.DRIVE_WHEEL_CIRCUMFRENCE));
         right1.set(ControlMode.Position, encoderUnits);
     }
 
     public void setDistanceLeft(double position) {
-        double encoderUnits = (position / RobotMap.DRIVE_WHEEL_CIRCUMFRENCE) * RobotMap.DRIVE_COUNTS_PER_REV;
+        double encoderUnits = position * ((RobotMap.DRIVE_COUNTS_PER_REV * RobotMap.DRIVE_GEAR_RATIO) / (RobotMap.DRIVE_WHEEL_CIRCUMFRENCE));
         left1.set(ControlMode.Position, encoderUnits);
     }
 

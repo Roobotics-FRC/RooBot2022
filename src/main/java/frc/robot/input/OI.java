@@ -1,7 +1,9 @@
 package frc.robot.input;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.RobotMap;
+import frc.robot.commands.Auton.DriveDistanceAuton;
 import frc.robot.commands.Teleop.DriveTurnToAngle;
 import frc.robot.input.filters.DummyFilter;
 import frc.robot.input.filters.LogitechFilter;
@@ -14,15 +16,20 @@ public final class OI {
     private RooJoystick cyleController;
     private RooJoystick operatorController;
     private JoystickButton turn90DegreesButton;
+    private JoystickButton driveForwardButton;
 
     private OI() {
-        this.cyleController = new RooJoystick(RobotMap.CYCLE_CONTROLLER_PORT, new LogitechFilter(), 0.01);
+        this.cyleController = new RooJoystick(RobotMap.CYCLE_CONTROLLER_PORT, new LogitechFilter(), 0.05);
 
         this.operatorController = new RooJoystick(RobotMap.OPERATOR_CONTROLLER_PORT,
                 new DummyFilter(), 0);
         this.turn90DegreesButton = new JoystickButton(this.cyleController,
                 RobotMap.DRIVE_TURN_TO_TARGET_BUTTON);
         this.turn90DegreesButton.whenPressed(new DriveTurnToAngle());
+
+        this.driveForwardButton = new JoystickButton(this.cyleController,
+                RobotMap.DRIVE_DISTANCE_BUTTON);
+        this.driveForwardButton.whenPressed(new DriveDistanceAuton(100));
     }
 
     /**

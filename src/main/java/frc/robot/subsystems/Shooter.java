@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
@@ -16,7 +18,7 @@ public class Shooter extends SubsystemBase {
     private WPI_TalonSRX motor1;
     private WPI_TalonSRX motor2;
 
-    private Solenoid angleSolenoid;
+    private DoubleSolenoid angleSolenoid;
 
     private WPI_TalonSRX feederMotor;
 
@@ -59,10 +61,21 @@ public class Shooter extends SubsystemBase {
         motor1.config_kP(0, RobotMap.SHOOTER_PID_GAINS.kP);
         motor1.config_kI(0, RobotMap.SHOOTER_PID_GAINS.kI);
         motor1.config_kD(0, RobotMap.SHOOTER_PID_GAINS.kD);
+
+        angleSolenoid = new DoubleSolenoid(RobotMap.PCM_PORT, PneumaticsModuleType.CTREPCM, RobotMap.SHOOTER_ANGLE_SOLENOID_DEPLOY, RobotMap.SHOOTER_ANGLE_SOLENOID_RETRACT);
     }
 
     public void setPercentOutput(double speed) {
         motor1.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
+        motor2.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
+    }
+
+    public void setPercentOutput1(double speed) {
+        motor1.set(ControlMode.PercentOutput, 1);
+    }
+
+    public void setPercentOutput2(double speed) {
+        motor2.set(ControlMode.PercentOutput, 1);
     }
 
     public void setVelocity(double speed) {
@@ -75,19 +88,23 @@ public class Shooter extends SubsystemBase {
     }
 
     public void feed() {
-        feederMotor.set(ControlMode.PercentOutput, 0.5);
+        feederMotor.set(ControlMode.PercentOutput, 1);
     }
 
     public void reverseFeed() {
-        feederMotor.set(ControlMode.PercentOutput, -0.5);
+        feederMotor.set(ControlMode.PercentOutput, -1);
     }
 
     public void stopFeeder() {
         feederMotor.set(ControlMode.PercentOutput, 0);
     }
 
-    public void setShooterState(Boolean state) {
-        angleSolenoid.set(state);
+    public void setShooterAngled() {
+        angleSolenoid.set(RobotMap.DEPLOYED);
+    }
+
+    public void setShooterFlat() {
+        angleSolenoid.set(RobotMap.RETRACTED);
     }
 
     public void stop() {

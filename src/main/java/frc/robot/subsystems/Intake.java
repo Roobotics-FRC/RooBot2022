@@ -4,7 +4,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -12,7 +13,7 @@ public class Intake extends SubsystemBase {
     private static volatile Intake instance;
 
     private WPI_TalonSRX motor1;
-    private Solenoid deploySolenoid;
+    private DoubleSolenoid deploySolenoid;
 
     /**
      * The getter for the Drivetrain class.
@@ -36,15 +37,15 @@ public class Intake extends SubsystemBase {
 
         motor1.setInverted(RobotMap.INTAKE_MOTOR.inverted);
 
-        // deploySolenoid = new Solenoid(moduleType, channel);
+        deploySolenoid = new DoubleSolenoid(RobotMap.PCM_PORT, PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_DEPLOY_SOLENOID_DEPLOY, RobotMap.INTAKE_DEPLOY_SOLENOID_RETRACT);
     }
 
     public void startIntake() {
-        motor1.set(ControlMode.PercentOutput, 0.5);
+        motor1.set(ControlMode.PercentOutput, 1);
     }
 
     public void reverseIntake() {
-        motor1.set(ControlMode.PercentOutput, -0.5);
+        motor1.set(ControlMode.PercentOutput, -1);
     }
 
     public void stopIntake() {
@@ -52,10 +53,10 @@ public class Intake extends SubsystemBase {
     }
 
     public void deployIntake() {
-        deploySolenoid.set(true);
+        deploySolenoid.set(RobotMap.DEPLOYED);
     }
 
     public void retractIntake() {
-        deploySolenoid.set(false);
+        deploySolenoid.set(RobotMap.RETRACTED);
     }
 }

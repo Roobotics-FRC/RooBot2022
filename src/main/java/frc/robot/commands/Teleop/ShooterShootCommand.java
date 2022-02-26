@@ -2,6 +2,7 @@ package frc.robot.commands.Teleop;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -25,42 +26,34 @@ public class ShooterShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double speed = SmartDashboard.getNumber("SHOOTERSPEED", 0) * 100000;
+        double speed = 0;
         if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON)) {
-            shooter.setVelocity(getShooterVelocityFromDistance(getDistanceFromYDist(table.getEntry("ty").getDouble(0))));
-            if (Math.abs(shooter.getVelocity() - getShooterVelocityFromDistance(getDistanceFromYDist(table.getEntry("ty").getDouble(0)))) < 1000) {
+            speed = getShooterVelocityFromDistance(getDistanceFromYDist(table.getEntry("ty").getDouble(0)));
+            shooter.setVelocity(speed);
+            if (Math.abs(shooter.getVelocity() - getShooterVelocityFromDistance(getDistanceFromYDist(table.getEntry("ty").getDouble(0)))) < 300) {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
             } else {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
-            }
-            if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_FEED_BUTTON)) {
-                shooter.feed();
-            } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_REVERSE_FEED_BUTTON)) {
-                shooter.reverseFeed();
-            } else {
-                shooter.stopFeeder();
             }
         } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_BUTTON)) {
+            speed = SmartDashboard.getNumber("SHOOTERSPEED", 0) * 35000;
             shooter.setVelocity(speed);
-            if (Math.abs(shooter.getVelocity() - speed) < 1000) {
+            if (Math.abs(shooter.getVelocity() - speed) < 300) {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
             } else {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             }
-            if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_FEED_BUTTON)) {
-                shooter.feed();
-            } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_REVERSE_FEED_BUTTON)) {
-                shooter.reverseFeed();
-            } else {
-                shooter.stopFeeder();
-            }
         } else {
+            speed = 0;
+            OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             shooter.stop();
-            if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_REVERSE_FEED_BUTTON)) {
-                shooter.reverseFeed();
-            } else {
-                shooter.stopFeeder();
-            }
+        }
+        if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_FEED_BUTTON)) {
+            shooter.feed();
+        } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_REVERSE_FEED_BUTTON)) {
+            shooter.reverseFeed();
+        } else {
+            shooter.stopFeeder();
         }
         SmartDashboard.putNumber("ShooterVelocity", shooter.getVelocity());
     }

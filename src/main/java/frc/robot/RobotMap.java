@@ -2,6 +2,8 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 
 /**
  * Holds various mappings and constants.
@@ -15,12 +17,15 @@ public class RobotMap {
     public static final int SHOOTER_SHOOT_WITH_VISION_BUTTON = 1;
     public static final int SHOOTER_FEED_BUTTON = 5;
     public static final int SHOOTER_REVERSE_FEED_BUTTON = 6;
+    public static final int SHOOTER_SET_ANGLE_FLAT_BUTTON = 7;
+    public static final int SHOOTER_SET_ANGLE_ANGLED_BUTTON = 8;
     public static final int INTAKE_INTAKE_AXIS = 2;
     public static final int INTAKE_REVERSE_INTAKE_AXIS = 3;
     public static final int CLIMB_RAISE_BUTTON = 4;
     public static final int CLIMB_LOWER_BUTTON = 5;
     // CYLE CONTROLLER
     public static final int DRIVE_TURN_TO_TARGET_BUTTON = 13;
+    public static final int DRIVE_DISTANCE_BUTTON = 14;
     public static final int KILL_COMMANDS_BUTTON = 15;
     public static final int DRIVE_SLOWER_SPEED_BUTTON = 1;
 
@@ -32,18 +37,23 @@ public class RobotMap {
     public static final double JOYSTICK_DEFAULT_DEADZONE = 0.09;
     public static final int PIGEON_ID = 19;
     public static final int COMPRESSOR_PORT = 2;
+    public static final int PCM_PORT = 3;
+    public static final int INTAKE_DEPLOY_SOLENOID_DEPLOY = 7;
+    public static final int INTAKE_DEPLOY_SOLENOID_RETRACT = 0;
+    public static final int SHOOTER_ANGLE_SOLENOID_DEPLOY = 6;
+    public static final int SHOOTER_ANGLE_SOLENOID_RETRACT = 1;
 
     // Motor Configs
     public static final MotorConfig DRIVETRAIN_MOTOR_RIGHT_1 = new MotorConfig(10, true, false);
     public static final MotorConfig DRIVETRAIN_MOTOR_RIGHT_2 = new MotorConfig(11, true, false);
     public static final MotorConfig DRIVETRAIN_MOTOR_RIGHT_3 = new MotorConfig(12, true, false);
-    public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_1 = new MotorConfig(13, false, false);
-    public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_2 = new MotorConfig(14, false, false);
-    public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_3 = new MotorConfig(15, false, false);
+    public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_1 = new MotorConfig(13, false, true);
+    public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_2 = new MotorConfig(14, false, true);
+    public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_3 = new MotorConfig(15, false, true);
 
-    public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(22, true, false);
-    public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(21, true, true);
-    public static final MotorConfig SHOOTER_FEEDER_MOTOR = new MotorConfig(23, false, true);
+    public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(21, true, true);
+    public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(22, true, false);
+    public static final MotorConfig SHOOTER_FEEDER_MOTOR = new MotorConfig(23, true, true);
 
     public static final MotorConfig CLIMB_MOTOR_1 = new MotorConfig(41, true, false);
     public static final MotorConfig CLIMB_MOTOR_2 = new MotorConfig(42, false, false);
@@ -52,13 +62,16 @@ public class RobotMap {
 
     // PID GAINS
     public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.02, 0.04, 0);
-    public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0.01, 0.02, 0, 0);
-    public static final PID SHOOTER_PID_GAINS = new PID(0.01, 0.02, 0, 0);
+    public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0, 0.015, 0, 0);
+    public static final PID SHOOTER_PID_GAINS = new PID(0.025, 0.03, 0.0002, 0);
 
     // Constants
     public static final double ENCODER_COUNTS_PER_REV = 4096;
     public static final double DRIVE_COUNTS_PER_REV = 2048;
+    public static final double DRIVE_GEAR_RATIO = 10.86;
     public static final double DRIVE_WHEEL_CIRCUMFRENCE = 6 * Math.PI;
+    public static final DoubleSolenoid.Value DEPLOYED = DoubleSolenoid.Value.kForward;
+    public static final DoubleSolenoid.Value RETRACTED = DoubleSolenoid.Value.kReverse;
 
     // Conversion factors
     // public static final double ENCODER_UNITS_TO_INCHES = DRIVE_WHEEL_DIAMETER_IN * Math.PI / DRIVE_ENCODER_COUNTS_PER_REV / DRIVE_GEARBOX_RATIO;

@@ -4,8 +4,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +26,7 @@ import frc.robot.subsystems.Shooter;
 public class Robot extends TimedRobot {
   // private Command m_autonomousCommand;
   private PowerDistribution pdp;
-  private Compressor compressor;
+  private PneumaticsControlModule pcm;
 
 
   /**
@@ -37,9 +36,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     pdp = new PowerDistribution();
-
-    this.compressor = new Compressor(RobotMap.COMPRESSOR_PORT, PneumaticsModuleType.CTREPCM);
-    compressor.enableDigital();
+    pcm = new PneumaticsControlModule(RobotMap.PCM_PORT);
 
     Drivetrain.getInstance();
     Shooter.getInstance();

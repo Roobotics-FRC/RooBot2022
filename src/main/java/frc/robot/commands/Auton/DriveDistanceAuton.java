@@ -1,6 +1,11 @@
 package frc.robot.commands.Auton;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotMap;
+import frc.robot.input.OI;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveDistanceAuton extends CommandBase {
@@ -18,25 +23,28 @@ public class DriveDistanceAuton extends CommandBase {
     @Override
     public void initialize() {
         drivetrain.stop();
+        drivetrain.setNeutralMode(NeutralMode.Coast);
         startingRight = drivetrain.getRightPositionInches();
         startingLeft = drivetrain.getLeftPositionInches();
-    }
-
-    @Override
-    public void execute() {
         drivetrain.setDistanceRight(distance + startingRight);
         drivetrain.setDistanceLeft(distance + startingLeft);
     }
 
     @Override
+    public void execute() {}
+
+    @Override
     public void end(boolean interrupted) {
         drivetrain.stop();
+        drivetrain.setNeutralMode(NeutralMode.Brake);
     }
 
     @Override
     public boolean isFinished() {
-        boolean rightInRange = Math.abs(drivetrain.getRightPositionInches() - (distance + startingRight)) < 1;
-        boolean leftInRange = Math.abs(drivetrain.getLeftPositionInches() - (distance + startingLeft)) < 1;
-        return rightInRange & leftInRange;
+        // boolean rightInRange = Math.abs(drivetrain.getRightPositionInches() - (distance + startingRight)) < 1;
+        // boolean leftInRange = Math.abs(drivetrain.getLeftPositionInches() - (distance + startingLeft)) < 1;
+        // return rightInRange & leftInRange;
+        return OI.getInstance().getCyleController().getRawButton(RobotMap.KILL_COMMANDS_BUTTON);
+        
     }
 }
