@@ -24,14 +24,14 @@ def drawDecorations(image):
     
 # runPipeline() is called every frame by Limelight's backend.
 def runPipeline(image, llrobot):
-    blur = cv2.GaussianBlur(image, (25, 25), 2)
+    blur = cv2.GaussianBlur(image, (25, 25), 10)
     hsv = cv2.cvtColor(blur, cv2.COLOR_BGR2HSV)
     hsl = cv2.cvtColor(blur, cv2.COLOR_BGR2HLS)
     rgb = cv2.cvtColor(blur, cv2.COLOR_BGR2RGB)
 
-    hsv_thresh = cv2.inRange(hsv, (0, 200, 50), (50, 255, 150))
-    hsl_thresh = cv2.inRange(hsl, (20, 20, 200), (255, 255, 255))
-    rgb_thresh = cv2.inRange(rgb, (0, 50, 00), (255, 255, 255))
+    hsv_thresh = cv2.inRange(hsv, (0, 25, 25), (50, 250, 50))
+    hsl_thresh = cv2.inRange(hsl, (15, 0, 25), (100, 100, 250))
+    rgb_thresh = cv2.inRange(rgb, (25, 25, 0), (50, 50, 50))
 
     inter_and = cv2.bitwise_and(hsv_thresh, hsl_thresh)
 
@@ -45,11 +45,17 @@ def runPipeline(image, llrobot):
 
     if len(contours) > 0:
         cv2.drawContours(image, contours, -1, 255, 2)
-        largestContour = max(contours, key=cv2.contourArea)
-        x,y,w,h = cv2.boundingRect(largestContour)
-
-        cv2.rectangle(image,(x,y),(x+w,y+h),(0,255,255),2)
-        llpython = [1,x,y,w,h,9,8,7]  
+        accepted = []
+        for cnt in contours:
+            x, y, w, h = cv2.boundingRect(cnt)
+            if w < 100 and w > 20 and h < 25:
+                accepted.append(cnt)
+        if len(accepted) > 0:
+            # cv2.drawContours(image, accepted, -1, 255, 2)
+            largestContour = max(accepted, key=cv2.contourArea)
+            x,y,w,h = cv2.boundingRect(largestContour)
+            cv2.rectangle(image,(x,y),(x+w,y+h),(0,255,255),2)
+            llpython = [1,x,y,w,h,9,8,7]  
   
     incrementTestVar()
     drawDecorations(image)

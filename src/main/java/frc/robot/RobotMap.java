@@ -53,8 +53,8 @@ public class RobotMap {
     public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_2 = new MotorConfig(14, false, true);
     public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_3 = new MotorConfig(15, false, true);
 
-    public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(21, false, false);
-    public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(22, false, true);
+    public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(21, true, true);
+    public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(22, true, false);
     public static final MotorConfig SHOOTER_FEEDER_MOTOR = new MotorConfig(23, true, true);
 
     public static final MotorConfig CLIMB_MOTOR_1 = new MotorConfig(41, true, false);
@@ -65,7 +65,7 @@ public class RobotMap {
     // PID GAINS
     public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.02, 0.04, 0);
     public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0, 0.005, 0, 0);
-    public static final PID SHOOTER_PID_GAINS = new PID(0.005, 0, 0.00004, 0);
+    public static final PID SHOOTER_PID_GAINS = new PID(0, 0, 0.00005, 0);
 
     // Constants
     public static final double ENCODER_COUNTS_PER_REV = 4096;
