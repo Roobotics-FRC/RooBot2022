@@ -27,6 +27,11 @@ public class IntakeDefaultCommand extends CommandBase {
         } else {
             intake.stopIntake();
         }
+        if (OI.getInstance().getOperatorController().getRawButton(RobotMap.INTAKE_DEPLOY_INTAKE_BUTTON)) {
+            intake.deployIntake();
+        } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.INTAKE_RETRACT_INTAKE_BUTTON)) {
+            intake.retractIntake();
+        }
     }
 
     @Override

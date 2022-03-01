@@ -21,6 +21,8 @@ public class RobotMap {
     public static final int SHOOTER_SET_ANGLE_ANGLED_BUTTON = 8;
     public static final int INTAKE_INTAKE_AXIS = 2;
     public static final int INTAKE_REVERSE_INTAKE_AXIS = 3;
+    public static final int INTAKE_DEPLOY_INTAKE_BUTTON = 9;
+    public static final int INTAKE_RETRACT_INTAKE_BUTTON = 10;
     public static final int CLIMB_RAISE_BUTTON = 4;
     public static final int CLIMB_LOWER_BUTTON = 5;
     // CYLE CONTROLLER
@@ -51,8 +53,8 @@ public class RobotMap {
     public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_2 = new MotorConfig(14, false, true);
     public static final MotorConfig DRIVETRAIN_MOTOR_LEFT_3 = new MotorConfig(15, false, true);
 
-    public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(21, true, true);
-    public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(22, true, false);
+    public static final MotorConfig SHOOTER_MOTOR_1 = new MotorConfig(21, false, false);
+    public static final MotorConfig SHOOTER_MOTOR_2 = new MotorConfig(22, false, true);
     public static final MotorConfig SHOOTER_FEEDER_MOTOR = new MotorConfig(23, true, true);
 
     public static final MotorConfig CLIMB_MOTOR_1 = new MotorConfig(41, true, false);
@@ -63,7 +65,7 @@ public class RobotMap {
     // PID GAINS
     public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.02, 0.04, 0);
     public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0, 0.005, 0, 0);
-    public static final PID SHOOTER_PID_GAINS = new PID(0.025, 0.03, 0.0002, 0);
+    public static final PID SHOOTER_PID_GAINS = new PID(0.005, 0, 0.00004, 0);
 
     // Constants
     public static final double ENCODER_COUNTS_PER_REV = 4096;

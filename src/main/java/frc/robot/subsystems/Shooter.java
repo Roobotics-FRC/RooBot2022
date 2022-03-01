@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -69,15 +68,6 @@ public class Shooter extends SubsystemBase {
         motor1.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
         motor2.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
     }
-
-    public void setPercentOutput1(double speed) {
-        motor1.set(ControlMode.PercentOutput, 1);
-    }
-
-    public void setPercentOutput2(double speed) {
-        motor2.set(ControlMode.PercentOutput, 1);
-    }
-
     public void setVelocity(double speed) {
         // Max looks like 100,000? Thats what it is in 2020
         motor1.set(ControlMode.Velocity, speed);

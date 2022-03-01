@@ -21,6 +21,7 @@ public class ShooterShootCommand extends CommandBase {
     @Override
     public void initialize() {
         shooter.stop();
+        shooter.setShooterAngled();
         SmartDashboard.putNumber("SHOOTERSPEED", 0);
     }
 
@@ -36,7 +37,7 @@ public class ShooterShootCommand extends CommandBase {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             }
         } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_BUTTON)) {
-            speed = SmartDashboard.getNumber("SHOOTERSPEED", 0) * 35000;
+            speed = SmartDashboard.getNumber("SHOOTERSPEED", 0);
             shooter.setVelocity(speed);
             if (Math.abs(shooter.getVelocity() - speed) < 300) {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
@@ -54,6 +55,11 @@ public class ShooterShootCommand extends CommandBase {
             shooter.reverseFeed();
         } else {
             shooter.stopFeeder();
+        }
+        if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SET_ANGLE_ANGLED_BUTTON)) {
+            shooter.setShooterAngled();
+        } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SET_ANGLE_FLAT_BUTTON)) {
+            shooter.setShooterFlat();
         }
         SmartDashboard.putNumber("ShooterVelocity", shooter.getVelocity());
     }
