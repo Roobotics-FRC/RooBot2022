@@ -25,8 +25,8 @@ public class RobotMap {
     public static final int INTAKE_RETRACT_INTAKE_BUTTON = 10;
     public static final int CLIMB_RAISE_BUTTON = 4;
     public static final int CLIMB_LOWER_BUTTON = 5;
+    public static final int DRIVE_TURN_TO_TARGET_BUTTON = 3;
     // CYLE CONTROLLER
-    public static final int DRIVE_TURN_TO_TARGET_BUTTON = 13;
     public static final int DRIVE_DISTANCE_BUTTON = 14;
     public static final int KILL_COMMANDS_BUTTON = 15;
     public static final int DRIVE_SLOWER_SPEED_BUTTON = 1;
@@ -63,7 +63,7 @@ public class RobotMap {
     public static final MotorConfig INTAKE_MOTOR = new MotorConfig(31, false, true);
 
     // PID GAINS
-    public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.02, 0.04, 0);
+    public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.02, 0.05, 0);
     public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0, 0.002, 0.000003, 0);
     public static final PID SHOOTER_PID_GAINS = new PID(0, 0, 0.00005, 0);
 

@@ -44,7 +44,7 @@ public class ShooterShootAuton extends CommandBase {
 
     private double getShooterVelocityFromDistance() {
         double x = getDistanceFromCamera();
-        return 163457 - 22014*x + 2089*Math.pow(x, 2) - 56*Math.pow(x, 3);
+        return 156714 - 20495 * x + 1977*Math.pow(x, 2) - 53.3*Math.pow(x, 3);
     }
 
     @Override
