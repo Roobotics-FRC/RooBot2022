@@ -24,6 +24,8 @@ public class ShooterShootAuton extends CommandBase {
         shooter.setVelocity(visionGetShooterSpeed());
         if (Math.abs(shooter.getVelocity() - visionGetShooterSpeed()) < 300) {
             shooter.feed();
+        } else {
+            shooter.stopFeeder();
         }
     }
 

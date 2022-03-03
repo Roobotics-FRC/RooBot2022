@@ -18,7 +18,7 @@ public class IntakeAuton extends CommandBase {
 
     @Override
     public void execute() {
-        intake.setIntake(0.9);
+        intake.setIntake(0.8);
     }
 
     @Override

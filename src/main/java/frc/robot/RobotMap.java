@@ -26,9 +26,9 @@ public class RobotMap {
     public static final int CLIMB_RAISE_BUTTON = 4;
     public static final int CLIMB_LOWER_BUTTON = 5;
     public static final int DRIVE_TURN_TO_TARGET_BUTTON = 3;
+    public static final int KILL_COMMANDS_BUTTON = 4;
     // CYLE CONTROLLER
     public static final int DRIVE_DISTANCE_BUTTON = 14;
-    public static final int KILL_COMMANDS_BUTTON = 15;
     public static final int DRIVE_SLOWER_SPEED_BUTTON = 1;
 
     // OI devices

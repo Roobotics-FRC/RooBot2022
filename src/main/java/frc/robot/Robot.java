@@ -79,13 +79,13 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
    m_autonomousCommand = new SequentialCommandGroup(
-     new IntakeDeployAuton().withTimeout(2),
+     new IntakeDeployAuton().withTimeout(3),
      new ParallelCommandGroup(
-      new DriveDistanceAuton(50),
-      new IntakeAuton().withTimeout(5)
+      new DriveDistanceAuton(75),
+      new IntakeAuton().withTimeout(4)
      ),
-     new DriveTurnToAngle().withTimeout(5),
-     new ShooterShootAuton().withTimeout(7)
+     new DriveTurnToAngle().withTimeout(3),
+     new ShooterShootAuton().withTimeout(8)
    );
    if (m_autonomousCommand != null) {
      m_autonomousCommand.schedule();
