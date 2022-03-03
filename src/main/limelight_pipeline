@@ -25,21 +25,26 @@ def drawDecorations(image):
 # runPipeline() is called every frame by Limelight's backend.
 def runPipeline(image, llrobot):
 
-    blur = cv2.GaussianBlur(image, (25, 25), 1)
+    # Exposure: 16
+    # Black Level: 9
+    # Red Balance: 2500
+    # Blue Balance: 500
+
+    blur = cv2.GaussianBlur(image, (15, 15), 1)
 
     hsv = cv2.cvtColor(blur, cv2.COLOR_BGR2HSV)
     hsl = cv2.cvtColor(blur, cv2.COLOR_BGR2HLS)
     rgb = cv2.cvtColor(blur, cv2.COLOR_BGR2RGB)
 
     hsv_thresh = cv2.inRange(hsv, (10, 50, 50), (50, 250, 200))
-    hsl_thresh = cv2.inRange(hsl, (10, 20, 50), (50, 100, 200))
-    rgb_thresh = cv2.inRange(rgb, (50, 30, 0), (200, 200, 50))
+    hsl_thresh = cv2.inRange(hsl, (20, 20, 50), (50, 100, 200))
+    rgb_thresh = cv2.inRange(rgb, (30, 10, 0), (220, 220, 100))
 
     inter_and = cv2.bitwise_and(hsv_thresh, hsl_thresh)
 
     img_threshold = cv2.bitwise_and(rgb_thresh, inter_and)
 
-    final = cv2.dilate(img_threshold, 3, 1)
+    final = cv2.dilate(img_threshold, (5, 5), 5)
 
     contours, _ = cv2.findContours(final, 
     cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -52,7 +57,8 @@ def runPipeline(image, llrobot):
         accepted = []
         for cnt in contours:
             x, y, w, h = cv2.boundingRect(cnt)
-            if w < 100 and w > 10 and h < 25:
+            aspect = w/h
+            if aspect > 1 and aspect < 10:
                 accepted.append(cnt)
         if len(accepted) > 0:
             # cv2.drawContours(image, accepted, -1, 255, 2)

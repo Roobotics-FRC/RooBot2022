@@ -2,10 +2,7 @@ package frc.robot.commands.Auton;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotMap;
-import frc.robot.input.OI;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveDistanceAuton extends CommandBase {

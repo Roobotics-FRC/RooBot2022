@@ -1,7 +1,5 @@
 package frc.robot.commands.Teleop;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.input.OI;
 import frc.robot.subsystems.Drivetrain;

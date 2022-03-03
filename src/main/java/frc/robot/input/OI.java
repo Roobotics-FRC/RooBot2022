@@ -1,9 +1,7 @@
 package frc.robot.input;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.RobotMap;
-import frc.robot.commands.Auton.DriveDistanceAuton;
 import frc.robot.commands.Teleop.DriveTurnToAngle;
 import frc.robot.input.filters.DummyFilter;
 import frc.robot.input.filters.LogitechFilter;

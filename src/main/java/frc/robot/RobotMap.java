@@ -2,6 +2,8 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 
@@ -10,6 +12,22 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
  */
 
 public class RobotMap {
+
+    static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+
+    public static double visionGetShooterSpeed() {
+        return getShooterVelocityFromDistance();
+    }
+
+    public static double getDistanceFromCamera() {
+        double x = table.getEntry("ty").getDouble(0);
+        return 13 - 0.542*x + 0.0214*Math.pow(x, 2) - 0.00118*Math.pow(x, 3) + 0.0000267*Math.pow(x, 4);
+    }
+
+    public static double getShooterVelocityFromDistance() {
+        double x = getDistanceFromCamera();
+        return 156714 - 20495 * x + 1977*Math.pow(x, 2) - 53.3*Math.pow(x, 3);
+    }
 
     // Button Ids
     // OPERATOR CONTROLLER
@@ -76,7 +94,7 @@ public class RobotMap {
     public static final DoubleSolenoid.Value RETRACTED = DoubleSolenoid.Value.kReverse;
 
     // SHOOTER CONSTANTS
-    public static final double SHOOTER_WALL_VELOCITY = 77500;
+    public static final double SHOOTER_WALL_VELOCITY = 80000;
     
     // Conversion factors
     // public static final double ENCODER_UNITS_TO_INCHES = DRIVE_WHEEL_DIAMETER_IN * Math.PI / DRIVE_ENCODER_COUNTS_PER_REV / DRIVE_GEARBOX_RATIO;

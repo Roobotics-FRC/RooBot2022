@@ -46,7 +46,7 @@ public class Shooter extends SubsystemBase {
         motor1.setNeutralMode(NeutralMode.Coast);
         motor2.setNeutralMode(NeutralMode.Coast);
 
-        feederMotor.setNeutralMode(NeutralMode.Coast);
+        feederMotor.setNeutralMode(NeutralMode.Brake);
 
         motor1.setInverted(RobotMap.SHOOTER_MOTOR_1.inverted);
         motor2.setInverted(RobotMap.SHOOTER_MOTOR_2.inverted);
