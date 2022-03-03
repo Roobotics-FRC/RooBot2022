@@ -8,7 +8,15 @@ import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Auton.DriveDistanceAuton;
+import frc.robot.commands.Auton.IntakeAuton;
+import frc.robot.commands.Auton.IntakeDeployAuton;
+import frc.robot.commands.Auton.ShooterShootAuton;
+import frc.robot.commands.Teleop.DriveTurnToAngle;
 import frc.robot.commands.Teleop.DriveWithJoystick;
 import frc.robot.commands.Teleop.IntakeDefaultCommand;
 import frc.robot.commands.Teleop.ShooterShootCommand;
@@ -24,7 +32,7 @@ import frc.robot.subsystems.Shooter;
  * project.
  */
 public class Robot extends TimedRobot {
-  // private Command m_autonomousCommand;
+  private Command m_autonomousCommand;
   private PowerDistribution pdp;
   private PneumaticsControlModule pcm;
 
@@ -58,6 +66,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putNumber("BatteryValue", pdp.getVoltage());
+    CommandScheduler.getInstance().run();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -69,10 +78,18 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-//    m_autonomousCommand = new AUTONCOMMAND();
-//    if (m_autonomousCommand != null) {
-//      m_autonomousCommand.schedule();
-//    }
+   m_autonomousCommand = new SequentialCommandGroup(
+     new IntakeDeployAuton().withTimeout(2),
+     new ParallelCommandGroup(
+      new DriveDistanceAuton(50),
+      new IntakeAuton().withTimeout(5)
+     ),
+     new DriveTurnToAngle().withTimeout(5),
+     new ShooterShootAuton().withTimeout(7)
+   );
+   if (m_autonomousCommand != null) {
+     m_autonomousCommand.schedule();
+   }
   }
 
   /** This function is called periodically during autonomous. */
@@ -83,21 +100,20 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-//    if (m_autonomousCommand != null) {
-//      m_autonomousCommand.cancel();
-//    }
+   if (m_autonomousCommand != null) {
+     m_autonomousCommand.cancel();
+   }
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    CommandScheduler.getInstance().run();
   }
 
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
-//    CommandScheduler.getInstance().cancelAll();
+  //  CommandScheduler.getInstance().cancelAll();
   }
 
   /** This function is called periodically during test mode. */

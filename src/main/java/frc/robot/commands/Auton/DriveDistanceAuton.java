@@ -41,10 +41,10 @@ public class DriveDistanceAuton extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        // boolean rightInRange = Math.abs(drivetrain.getRightPositionInches() - (distance + startingRight)) < 1;
-        // boolean leftInRange = Math.abs(drivetrain.getLeftPositionInches() - (distance + startingLeft)) < 1;
-        // return rightInRange & leftInRange;
-        return OI.getInstance().getCyleController().getRawButton(RobotMap.KILL_COMMANDS_BUTTON);
+        boolean rightInRange = Math.abs(drivetrain.getRightPositionInches() - (distance + startingRight)) < 2;
+        boolean leftInRange = Math.abs(drivetrain.getLeftPositionInches() - (distance + startingLeft)) < 2;
+        return rightInRange && leftInRange;
+        // return OI.getInstance().getCyleController().getRawButton(RobotMap.KILL_COMMANDS_BUTTON);
         
     }
 }

@@ -17,27 +17,31 @@ def incrementTestVar():
 
 def drawDecorations(image):
     cv2.putText(image, 
-        'Limelight python script!', 
+        'Py', 
         (0, 230), 
         cv2.FONT_HERSHEY_SIMPLEX, 
         .5, (0, 255, 0), 1, cv2.LINE_AA)
     
 # runPipeline() is called every frame by Limelight's backend.
 def runPipeline(image, llrobot):
-    blur = cv2.GaussianBlur(image, (25, 25), 10)
+
+    blur = cv2.GaussianBlur(image, (25, 25), 1)
+
     hsv = cv2.cvtColor(blur, cv2.COLOR_BGR2HSV)
     hsl = cv2.cvtColor(blur, cv2.COLOR_BGR2HLS)
     rgb = cv2.cvtColor(blur, cv2.COLOR_BGR2RGB)
 
-    hsv_thresh = cv2.inRange(hsv, (0, 25, 25), (50, 250, 50))
-    hsl_thresh = cv2.inRange(hsl, (15, 0, 25), (100, 100, 250))
-    rgb_thresh = cv2.inRange(rgb, (25, 25, 0), (50, 50, 50))
+    hsv_thresh = cv2.inRange(hsv, (10, 50, 50), (50, 250, 200))
+    hsl_thresh = cv2.inRange(hsl, (10, 20, 50), (50, 100, 200))
+    rgb_thresh = cv2.inRange(rgb, (50, 30, 0), (200, 200, 50))
 
     inter_and = cv2.bitwise_and(hsv_thresh, hsl_thresh)
 
     img_threshold = cv2.bitwise_and(rgb_thresh, inter_and)
 
-    contours, _ = cv2.findContours(img_threshold, 
+    final = cv2.dilate(img_threshold, 3, 1)
+
+    contours, _ = cv2.findContours(final, 
     cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
   
     largestContour = np.array([[]])
@@ -48,7 +52,7 @@ def runPipeline(image, llrobot):
         accepted = []
         for cnt in contours:
             x, y, w, h = cv2.boundingRect(cnt)
-            if w < 100 and w > 20 and h < 25:
+            if w < 100 and w > 10 and h < 25:
                 accepted.append(cnt)
         if len(accepted) > 0:
             # cv2.drawContours(image, accepted, -1, 255, 2)

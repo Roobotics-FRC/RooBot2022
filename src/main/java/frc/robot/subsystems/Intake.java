@@ -40,12 +40,8 @@ public class Intake extends SubsystemBase {
         deploySolenoid = new DoubleSolenoid(RobotMap.PCM_PORT, PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_DEPLOY_SOLENOID_DEPLOY, RobotMap.INTAKE_DEPLOY_SOLENOID_RETRACT);
     }
 
-    public void startIntake() {
-        motor1.set(ControlMode.PercentOutput, 1);
-    }
-
-    public void reverseIntake() {
-        motor1.set(ControlMode.PercentOutput, -1);
+    public void setIntake(double speed) {
+        motor1.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
     }
 
     public void stopIntake() {

@@ -2,7 +2,6 @@ package frc.robot.commands.Teleop;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -22,22 +21,23 @@ public class ShooterShootCommand extends CommandBase {
     public void initialize() {
         shooter.stop();
         shooter.setShooterAngled();
-        SmartDashboard.putNumber("SHOOTERSPEED", 0);
     }
 
     @Override
     public void execute() {
         double speed = 0;
         if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON)) {
-            speed = getShooterVelocityFromDistance(getDistanceFromYDist(table.getEntry("ty").getDouble(0)));
+            shooter.setShooterAngled();
+            speed = visionGetShooterSpeed();
             shooter.setVelocity(speed);
-            if (Math.abs(shooter.getVelocity() - getShooterVelocityFromDistance(getDistanceFromYDist(table.getEntry("ty").getDouble(0)))) < 300) {
+            if (Math.abs(shooter.getVelocity() - speed) < 300) {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
             } else {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             }
         } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_BUTTON)) {
-            speed = SmartDashboard.getNumber("SHOOTERSPEED", 0);
+            shooter.setShooterFlat();
+            speed = RobotMap.SHOOTER_WALL_VELOCITY;
             shooter.setVelocity(speed);
             if (Math.abs(shooter.getVelocity() - speed) < 300) {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
@@ -62,6 +62,8 @@ public class ShooterShootCommand extends CommandBase {
             shooter.setShooterFlat();
         }
         SmartDashboard.putNumber("ShooterVelocity", shooter.getVelocity());
+        SmartDashboard.putNumber("DISTANCE", getDistanceFromCamera());
+        SmartDashboard.putNumber("SPEED", getShooterVelocityFromDistance());
     }
 
     @Override
@@ -69,12 +71,18 @@ public class ShooterShootCommand extends CommandBase {
         shooter.stop();
     }
 
-    private double getDistanceFromYDist(double yDist) {
-        return yDist;
+    private double visionGetShooterSpeed() {
+        return getShooterVelocityFromDistance();
     }
 
-    private double getShooterVelocityFromDistance(double distance) {
-        return distance;
+    private double getDistanceFromCamera() {
+        double x = table.getEntry("ty").getDouble(0);
+        return 13 - 0.542*x + 0.0214*Math.pow(x, 2) - 0.00118*Math.pow(x, 3) + 0.0000267*Math.pow(x, 4);
+    }
+
+    private double getShooterVelocityFromDistance() {
+        double x = getDistanceFromCamera();
+        return 163457 - 22014*x + 2089*Math.pow(x, 2) - 56*Math.pow(x, 3);
     }
 
     @Override

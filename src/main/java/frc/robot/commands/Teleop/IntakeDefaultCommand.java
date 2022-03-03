@@ -20,10 +20,10 @@ public class IntakeDefaultCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (OI.getInstance().getOperatorController().getRawAxis(RobotMap.INTAKE_INTAKE_AXIS) > 0.25) {
-            intake.startIntake();
-        } else if (OI.getInstance().getOperatorController().getRawAxis(RobotMap.INTAKE_REVERSE_INTAKE_AXIS) > 0.25) {
-            intake.reverseIntake();
+        if (OI.getInstance().getOperatorController().getRawAxis(RobotMap.INTAKE_INTAKE_AXIS) > 0.05) {
+            intake.setIntake(OI.getInstance().getOperatorController().getRawAxis(RobotMap.INTAKE_INTAKE_AXIS));
+        } else if (OI.getInstance().getOperatorController().getRawAxis(RobotMap.INTAKE_REVERSE_INTAKE_AXIS) > 0.05) {
+            intake.setIntake(-OI.getInstance().getOperatorController().getRawAxis(RobotMap.INTAKE_REVERSE_INTAKE_AXIS));
         } else {
             intake.stopIntake();
         }

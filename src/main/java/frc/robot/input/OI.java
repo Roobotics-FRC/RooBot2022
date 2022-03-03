@@ -16,7 +16,6 @@ public final class OI {
     private RooJoystick cyleController;
     private RooJoystick operatorController;
     private JoystickButton turn90DegreesButton;
-    private JoystickButton driveForwardButton;
 
     private OI() {
         this.cyleController = new RooJoystick(RobotMap.CYCLE_CONTROLLER_PORT, new LogitechFilter(), 0.05);
@@ -26,10 +25,6 @@ public final class OI {
         this.turn90DegreesButton = new JoystickButton(this.cyleController,
                 RobotMap.DRIVE_TURN_TO_TARGET_BUTTON);
         this.turn90DegreesButton.whenPressed(new DriveTurnToAngle());
-
-        this.driveForwardButton = new JoystickButton(this.cyleController,
-                RobotMap.DRIVE_DISTANCE_BUTTON);
-        this.driveForwardButton.whenPressed(new DriveDistanceAuton(100));
     }
 
     /**
