@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Auton.DriveDistanceAuton;
 import frc.robot.commands.Auton.IntakeAuton;
 import frc.robot.commands.Auton.IntakeDeployAuton;
+import frc.robot.commands.Auton.ShootAgainstWall;
 import frc.robot.commands.Auton.ShooterShootAuton;
 import frc.robot.commands.Teleop.DriveTurnToAngle;
 import frc.robot.commands.Teleop.DriveWithJoystick;
@@ -78,6 +79,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    // m_autonomousCommand = new SequentialCommandGroup(
+    //   new ShootAgainstWall().withTimeout(8),
+    //   new IntakeDeployAuton().withTimeout(1),
+    //   new DriveDistanceAuton(75)
+    // );
+
    m_autonomousCommand = new SequentialCommandGroup(
      new IntakeDeployAuton().withTimeout(3),
      new ParallelCommandGroup(

@@ -48,6 +48,8 @@ public class RobotMap {
     // CYLE CONTROLLER
     public static final int DRIVE_DISTANCE_BUTTON = 14;
     public static final int DRIVE_SLOWER_SPEED_BUTTON = 1;
+    public static final int DRIVE_LEFT_AXIS = 1;
+    public static final int DRIVE_RIGHT_AXIS = 4;
 
     // OI devices
     public static final int LEFT_DRIVE_JOYSTICK_PORT = 0;
