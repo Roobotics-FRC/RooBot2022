@@ -30,7 +30,7 @@ public class ShooterShootCommand extends CommandBase {
             shooter.setShooterAngled();
             speed = visionGetShooterSpeed();
             shooter.setVelocity(speed);
-            if (Math.abs(shooter.getVelocity() - speed) < 300) {
+            if (Math.abs(shooter.getVelocity() - speed) < 400) {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
             } else {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
@@ -39,7 +39,7 @@ public class ShooterShootCommand extends CommandBase {
             shooter.setShooterFlat();
             speed = RobotMap.SHOOTER_WALL_VELOCITY;
             shooter.setVelocity(speed);
-            if (Math.abs(shooter.getVelocity() - speed) < 300) {
+            if (Math.abs(shooter.getVelocity() - speed) < 400) {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
             } else {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
