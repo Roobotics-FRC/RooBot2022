@@ -17,11 +17,13 @@ import frc.robot.commands.Auton.IntakeAuton;
 import frc.robot.commands.Auton.IntakeDeployAuton;
 import frc.robot.commands.Auton.ShootAgainstWall;
 import frc.robot.commands.Auton.ShooterShootAuton;
+import frc.robot.commands.Teleop.ClimbDefaultCommand;
 import frc.robot.commands.Teleop.DriveTurnToAngle;
 import frc.robot.commands.Teleop.DriveWithJoystick;
 import frc.robot.commands.Teleop.IntakeDefaultCommand;
 import frc.robot.commands.Teleop.ShooterShootCommand;
 import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -51,7 +53,9 @@ public class Robot extends TimedRobot {
     Shooter.getInstance();
     Camera.getInstance();
     Intake.getInstance();
+    Climb.getInstance();
 
+    CommandScheduler.getInstance().setDefaultCommand(Climb.getInstance(), new ClimbDefaultCommand());
     CommandScheduler.getInstance().setDefaultCommand(Intake.getInstance(), new IntakeDefaultCommand());
     CommandScheduler.getInstance().setDefaultCommand(Drivetrain.getInstance(), new DriveWithJoystick());
     CommandScheduler.getInstance().setDefaultCommand(Shooter.getInstance(), new ShooterShootCommand());
