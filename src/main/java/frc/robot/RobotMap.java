@@ -46,7 +46,7 @@ public class RobotMap {
     public static final int KILL_COMMANDS_BUTTON = 4;
     // CYLE CONTROLLER
     public static final int DRIVE_DISTANCE_BUTTON = 14;
-    public static final int DRIVE_SLOWER_SPEED_BUTTON = 1;
+    public static final int DRIVE_SLOWER_SPEED_BUTTON = 7;
     public static final int DRIVE_LEFT_AXIS = 1;
     public static final int DRIVE_RIGHT_AXIS = 4;
 
@@ -86,7 +86,7 @@ public class RobotMap {
     // PID GAINS
     public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.015, 0.01, 0);
     public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0, 0.002, 0.000003, 0);
-    public static final PID SHOOTER_PID_GAINS = new PID(0, 0.2, 0.00003, 0);
+    public static final PID SHOOTER_PID_GAINS = new PID(0, 0.04, 0.0001, 0);
 
     // Constants
     public static final double ENCODER_COUNTS_PER_REV = 4096;
