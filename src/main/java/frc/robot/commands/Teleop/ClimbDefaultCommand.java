@@ -1,6 +1,5 @@
 package frc.robot.commands.Teleop;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMap;
 import frc.robot.input.OI;
@@ -20,7 +19,7 @@ public class ClimbDefaultCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (Math.abs(OI.getInstance().getOperatorController().getRawAxis(RobotMap.CLIMB_AXIS)) > 0.1) {
+        if (Math.abs(OI.getInstance().getOperatorController().getRawAxis(RobotMap.CLIMB_AXIS)) > 0.15) {
             climb.setClimb(OI.getInstance().getOperatorController().getAxis(RobotMap.CLIMB_AXIS) * 0.8);
         } else {
             climb.stop();

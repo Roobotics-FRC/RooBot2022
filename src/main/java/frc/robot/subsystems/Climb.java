@@ -51,15 +51,7 @@ public class Climb extends SubsystemBase {
     }
 
     public void setClimb(double speed) {
-        if (speed > 0) {
-            if (topLimitSwitch.get()) {
-                setPercentOutput(speed);
-            }
-        } else {
-            if (bottomLimitSwitch.get()) {
-                setPercentOutput(speed);
-            }
-        }
+        setPercentOutput(speed);
     }
 
     public void stop() {

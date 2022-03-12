@@ -86,9 +86,11 @@ public class RobotMap {
     // PID GAINS
     public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.015, 0.01, 0);
     public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0, 0.002, 0.000003, 0);
-    public static final PID SHOOTER_PID_GAINS = new PID(0, 0.04, 0.0001, 0);
+    // public static final PID SHOOTER_PID_GAINS = new PID(0, 0.04, 0.0001, 0);
+    public static final PID SHOOTER_PID_GAINS = new PID(0.0075, 0.3, 0, 1);
 
     // Constants
+    public static final double SHOOTER_SETPOINT_THRESHOLD = 1000;
     public static final double ENCODER_COUNTS_PER_REV = 4096;
     public static final double DRIVE_COUNTS_PER_REV = 2048;
     public static final double DRIVE_GEAR_RATIO = 10.86;
@@ -97,7 +99,8 @@ public class RobotMap {
     public static final DoubleSolenoid.Value RETRACTED = DoubleSolenoid.Value.kReverse;
 
     // SHOOTER CONSTANTS
-    public static final double SHOOTER_WALL_VELOCITY = 80000;
+    public static final double SHOOTER_WALL_VELOCITY = 85000;
+    public static final double SHOOTER_LOW_VELOCITY = 40000;
     
     // Conversion factors
     // public static final double ENCODER_UNITS_TO_INCHES = DRIVE_WHEEL_DIAMETER_IN * Math.PI / DRIVE_ENCODER_COUNTS_PER_REV / DRIVE_GEARBOX_RATIO;

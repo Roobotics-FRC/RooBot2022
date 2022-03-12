@@ -25,18 +25,21 @@ public class ShooterShootCommand extends CommandBase {
         double speed = 0;
         if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON)) {
             shooter.setShooterAngled();
-            speed = RobotMap.visionGetShooterSpeed();
+            // speed = RobotMap.visionGetShooterSpeed();
+            speed = 90000;
             shooter.setVelocity(speed);
-            if (Math.abs(shooter.getVelocity() - speed) < 400) {
+            if (Math.abs(shooter.getVelocity() - speed) < RobotMap.SHOOTER_SETPOINT_THRESHOLD) {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
             } else {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             }
         } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_BUTTON)) {
-            shooter.setShooterFlat();
-            speed = RobotMap.SHOOTER_WALL_VELOCITY;
+            // shooter.setShooterFlat();
+            // speed = RobotMap.SHOOTER_WALL_VELOCITY;
+            shooter.setShooterAngled();
+            speed = RobotMap.SHOOTER_LOW_VELOCITY;
             shooter.setVelocity(speed);
-            if (Math.abs(shooter.getVelocity() - speed) < 400) {
+            if (Math.abs(shooter.getVelocity() - speed) < RobotMap.SHOOTER_SETPOINT_THRESHOLD) {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
             } else {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
