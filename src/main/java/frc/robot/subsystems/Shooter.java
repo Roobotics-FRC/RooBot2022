@@ -61,6 +61,11 @@ public class Shooter extends SubsystemBase {
         motor1.config_kI(0, RobotMap.SHOOTER_PID_GAINS.kI);
         motor1.config_kD(0, RobotMap.SHOOTER_PID_GAINS.kD);
 
+        motor1.config_kF(1, RobotMap.SHOOTER_PID_GAINS_CLOSE.kF);
+        motor1.config_kP(1, RobotMap.SHOOTER_PID_GAINS_CLOSE.kP);
+        motor1.config_kI(1, RobotMap.SHOOTER_PID_GAINS_CLOSE.kI);
+        motor1.config_kD(1, RobotMap.SHOOTER_PID_GAINS_CLOSE.kD);
+
         angleSolenoid = new DoubleSolenoid(RobotMap.PCM_PORT, PneumaticsModuleType.CTREPCM, RobotMap.SHOOTER_ANGLE_SOLENOID_DEPLOY, RobotMap.SHOOTER_ANGLE_SOLENOID_RETRACT);
     }
 
@@ -68,8 +73,12 @@ public class Shooter extends SubsystemBase {
         motor1.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
         motor2.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
     }
-    public void setVelocity(double speed) {
-        // Max looks like 100,000? Thats what it is in 2020
+    public void setVelocity(double speed, Boolean close) {
+        if (close) {
+            motor1.selectProfileSlot(1, 0);
+        } else {
+            motor1.selectProfileSlot(0, 0);
+        }
         motor1.set(ControlMode.Velocity, speed);
     }
 

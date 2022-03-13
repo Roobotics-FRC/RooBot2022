@@ -35,15 +35,13 @@ public class RobotMap {
     public static final int SHOOTER_SHOOT_WITH_VISION_BUTTON = 1;
     public static final int SHOOTER_FEED_BUTTON = 5;
     public static final int SHOOTER_REVERSE_FEED_BUTTON = 6;
-    public static final int SHOOTER_SET_ANGLE_FLAT_BUTTON = 7;
-    public static final int SHOOTER_SET_ANGLE_ANGLED_BUTTON = 8;
     public static final int INTAKE_INTAKE_AXIS = 2;
     public static final int INTAKE_REVERSE_INTAKE_AXIS = 3;
     public static final int INTAKE_DEPLOY_INTAKE_BUTTON = 9;
     public static final int INTAKE_RETRACT_INTAKE_BUTTON = 10;
     public static final int CLIMB_AXIS = 1;
-    public static final int DRIVE_TURN_TO_TARGET_BUTTON = 3;
-    public static final int KILL_COMMANDS_BUTTON = 4;
+    public static final int DRIVE_TURN_TO_TARGET_BUTTON = 7;
+    public static final int KILL_COMMANDS_BUTTON = 8;
     // CYLE CONTROLLER
     public static final int DRIVE_DISTANCE_BUTTON = 14;
     public static final int DRIVE_SLOWER_SPEED_BUTTON = 7;
@@ -89,8 +87,10 @@ public class RobotMap {
     // public static final PID SHOOTER_PID_GAINS = new PID(0, 0.04, 0.0001, 0);
     public static final PID SHOOTER_PID_GAINS = new PID(0.0075, 0.3, 0, 1);
 
+    public static final PID SHOOTER_PID_GAINS_CLOSE = new PID(0, 0.02, 0, 0);
+
     // Constants
-    public static final double SHOOTER_SETPOINT_THRESHOLD = 1000;
+    public static final double SHOOTER_SETPOINT_THRESHOLD = 1500;
     public static final double ENCODER_COUNTS_PER_REV = 4096;
     public static final double DRIVE_COUNTS_PER_REV = 2048;
     public static final double DRIVE_GEAR_RATIO = 10.86;

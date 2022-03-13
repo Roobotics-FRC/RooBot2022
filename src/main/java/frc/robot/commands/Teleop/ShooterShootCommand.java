@@ -25,20 +25,17 @@ public class ShooterShootCommand extends CommandBase {
         double speed = 0;
         if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON)) {
             shooter.setShooterAngled();
-            // speed = RobotMap.visionGetShooterSpeed();
-            speed = 90000;
-            shooter.setVelocity(speed);
+            speed = RobotMap.visionGetShooterSpeed();
+            shooter.setVelocity(speed, false);
             if (Math.abs(shooter.getVelocity() - speed) < RobotMap.SHOOTER_SETPOINT_THRESHOLD) {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
             } else {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             }
         } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_BUTTON)) {
-            // shooter.setShooterFlat();
-            // speed = RobotMap.SHOOTER_WALL_VELOCITY;
             shooter.setShooterAngled();
             speed = RobotMap.SHOOTER_LOW_VELOCITY;
-            shooter.setVelocity(speed);
+            shooter.setVelocity(speed, true);
             if (Math.abs(shooter.getVelocity() - speed) < RobotMap.SHOOTER_SETPOINT_THRESHOLD) {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
             } else {
@@ -55,11 +52,6 @@ public class ShooterShootCommand extends CommandBase {
             shooter.reverseFeed();
         } else {
             shooter.stopFeeder();
-        }
-        if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SET_ANGLE_ANGLED_BUTTON)) {
-            shooter.setShooterAngled();
-        } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SET_ANGLE_FLAT_BUTTON)) {
-            shooter.setShooterFlat();
         }
         SmartDashboard.putNumber("ShooterVelocity", shooter.getVelocity());
         SmartDashboard.putNumber("DISTANCE", RobotMap.getDistanceFromCamera());
