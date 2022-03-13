@@ -24,7 +24,11 @@ public class DriveTurnToAngle extends CommandBase {
 
     @Override
     public void execute() {
-        
+        if (OI.getInstance().getOperatorController().getRawButton(RobotMap.DRIVE_TURN_TO_TARGET_BUTTON)) {
+            drivetrain.resetPigeonYaw();
+            drivetrain.enable();
+            drivetrain.setSetpoint(-table.getEntry("tx").getDouble(0));
+        }
     }
 
     @Override
