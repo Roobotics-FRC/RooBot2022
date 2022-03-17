@@ -93,6 +93,7 @@ public class RobotMap {
 
     // Constants
     public static final double SHOOTER_SETPOINT_THRESHOLD = 1500;
+    public static final double ALIGN_ANGLE_THRESHOLD = 5;
     public static final double ENCODER_COUNTS_PER_REV = 4096;
     public static final double DRIVE_COUNTS_PER_REV = 2048;
     public static final double DRIVE_GEAR_RATIO = 10.86;
