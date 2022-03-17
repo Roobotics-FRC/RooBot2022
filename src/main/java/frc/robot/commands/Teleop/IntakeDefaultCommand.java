@@ -1,6 +1,5 @@
 package frc.robot.commands.Teleop;
 
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMap;
 import frc.robot.input.OI;
@@ -29,11 +28,11 @@ public class IntakeDefaultCommand extends CommandBase {
             intake.stopIntake();
         }
         if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_FEED_BUTTON)) {
-            intake.setIntake(0.25);
+            intake.setIntake(0.4);
         }
-        if (OI.getInstance().getOperatorController().getRawButton(RobotMap.INTAKE_DEPLOY_INTAKE_BUTTON)) {
+        if (OI.getInstance().getCyleController().getRawButtonPressed(RobotMap.DRIVER_INTAKE_DEPLOY_INTAKE_BUTTON)) {
             intake.deployIntake();
-        } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.INTAKE_RETRACT_INTAKE_BUTTON)) {
+        } else if (OI.getInstance().getCyleController().getRawButtonPressed(RobotMap.DRIVER_INTAKE_RETRACT_INTAKE_BUTTON)) {
             intake.retractIntake();
         }
     }

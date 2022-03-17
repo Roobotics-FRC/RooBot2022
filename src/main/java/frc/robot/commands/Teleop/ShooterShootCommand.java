@@ -28,8 +28,10 @@ public class ShooterShootCommand extends CommandBase {
             speed = RobotMap.visionGetShooterSpeed();
             shooter.setVelocity(speed, false);
             if (Math.abs(shooter.getVelocity() - speed) < RobotMap.SHOOTER_SETPOINT_THRESHOLD) {
-                OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
+                SmartDashboard.putBoolean("SHOOTER_READY", true);
+                OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.8);
             } else {
+                SmartDashboard.putBoolean("SHOOTER_READY", false);
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             }
         } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_BUTTON)) {
@@ -37,11 +39,14 @@ public class ShooterShootCommand extends CommandBase {
             speed = RobotMap.SHOOTER_LOW_VELOCITY;
             shooter.setVelocity(speed, true);
             if (Math.abs(shooter.getVelocity() - speed) < RobotMap.SHOOTER_SETPOINT_THRESHOLD) {
-                OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.5);
+                SmartDashboard.putBoolean("SHOOTER_READY", true);
+                OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.8);
             } else {
+                SmartDashboard.putBoolean("SHOOTER_READY", false);
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             }
         } else {
+            SmartDashboard.putBoolean("SHOOTER_READY", false);
             speed = 0;
             OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             shooter.stop();

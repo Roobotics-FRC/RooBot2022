@@ -93,8 +93,8 @@ public class Robot extends TimedRobot {
      new IntakeDeployAuton().withTimeout(3),
      new ParallelCommandGroup(
       new DriveDistanceAuton(75),
-      new IntakeAuton().withTimeout(3)
-     ),
+      new IntakeAuton()
+     ).withTimeout(3),
      new DriveTurnToAngle().withTimeout(3),
      new ShooterShootAuton().withTimeout(10)
    );

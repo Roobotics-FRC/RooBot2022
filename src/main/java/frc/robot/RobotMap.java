@@ -47,6 +47,8 @@ public class RobotMap {
     public static final int DRIVE_SLOWER_SPEED_BUTTON = 7;
     public static final int DRIVE_LEFT_AXIS = 1;
     public static final int DRIVE_RIGHT_AXIS = 4;
+    public static final int DRIVER_INTAKE_DEPLOY_INTAKE_BUTTON = 2;
+    public static final int DRIVER_INTAKE_RETRACT_INTAKE_BUTTON = 3;
 
     // OI devices
     public static final int LEFT_DRIVE_JOYSTICK_PORT = 0;
