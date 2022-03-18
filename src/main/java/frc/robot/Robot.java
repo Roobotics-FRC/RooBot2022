@@ -4,7 +4,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,15 +14,16 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Auton.DriveDistanceAuton;
+import frc.robot.commands.Auton.DriveTurnToAngleWithoutVision;
 import frc.robot.commands.Auton.IntakeAuton;
 import frc.robot.commands.Auton.IntakeDeployAuton;
-import frc.robot.commands.Auton.ShootAgainstWall;
 import frc.robot.commands.Auton.ShooterShootAuton;
 import frc.robot.commands.Teleop.ClimbDefaultCommand;
 import frc.robot.commands.Teleop.DriveTurnToAngle;
 import frc.robot.commands.Teleop.DriveWithJoystick;
 import frc.robot.commands.Teleop.IntakeDefaultCommand;
 import frc.robot.commands.Teleop.ShooterShootCommand;
+import frc.robot.input.OI;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
@@ -37,8 +39,7 @@ import frc.robot.subsystems.Shooter;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private PowerDistribution pdp;
-  private PneumaticsControlModule pcm;
-
+  private Compressor compressor;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -47,7 +48,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     pdp = new PowerDistribution();
-    pcm = new PneumaticsControlModule(RobotMap.PCM_PORT);
+    compressor = new Compressor(RobotMap.PCM_PORT, PneumaticsModuleType.CTREPCM);
+    compressor.enableDigital();
 
     Drivetrain.getInstance();
     Shooter.getInstance();
@@ -88,16 +90,48 @@ public class Robot extends TimedRobot {
     //   new IntakeDeployAuton().withTimeout(1),
     //   new DriveDistanceAuton(75)
     // );
+    if (OI.getInstance().getCyleController().getRawButton(1)) {
+      m_autonomousCommand = new SequentialCommandGroup(
+        new IntakeDeployAuton().withTimeout(2),
+        new ParallelCommandGroup(
+         new DriveDistanceAuton(90),
+         new IntakeAuton()
+        ).withTimeout(3),
+        new DriveTurnToAngle().withTimeout(2),
+        new ShooterShootAuton().withTimeout(10)
+        );
+    } else {
+      m_autonomousCommand = new SequentialCommandGroup(
+        new IntakeDeployAuton().withTimeout(0.5),
 
-   m_autonomousCommand = new SequentialCommandGroup(
-     new IntakeDeployAuton().withTimeout(3),
-     new ParallelCommandGroup(
-      new DriveDistanceAuton(75),
-      new IntakeAuton()
-     ).withTimeout(3),
-     new DriveTurnToAngle().withTimeout(3),
-     new ShooterShootAuton().withTimeout(10)
-   );
+        new ParallelCommandGroup(
+         new DriveDistanceAuton(90),
+         new IntakeAuton()
+        ).withTimeout(2.5),
+
+        new ParallelCommandGroup(
+        new DriveTurnToAngle().withTimeout(0.5),
+        new ShooterShootAuton().withTimeout(2.5)
+        ),
+
+        new DriveTurnToAngleWithoutVision(-30).withTimeout(1.25),
+
+        new ParallelCommandGroup(
+         new DriveDistanceAuton(125),
+         new IntakeAuton()
+        ).withTimeout(3.5),
+
+        new ParallelCommandGroup(
+         new DriveDistanceAuton(-100),
+         new IntakeAuton()
+        ).withTimeout(1.5),
+
+       new ParallelCommandGroup(
+         new DriveTurnToAngle().withTimeout(0.5),
+         new ShooterShootAuton().withTimeout(5)
+       )
+      );
+    }
    if (m_autonomousCommand != null) {
      m_autonomousCommand.schedule();
    }

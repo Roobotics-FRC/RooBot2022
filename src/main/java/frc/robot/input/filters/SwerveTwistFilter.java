@@ -1,8 +1,5 @@
 package frc.robot.input.filters;
 
-/**
- * A Javadoc template. TODO: Update SwerveTwistFilter Javadoc.
- */
 public class SwerveTwistFilter extends DoubleTypeFilter {
     @Override
     public Double applyFilter(Double val) {

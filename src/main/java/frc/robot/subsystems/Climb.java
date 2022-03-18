@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -13,8 +12,6 @@ public class Climb extends SubsystemBase {
 
     private WPI_TalonSRX motor1;
     private WPI_TalonSRX motor2;
-    private DigitalInput bottomLimitSwitch;
-    private DigitalInput topLimitSwitch;
 
     /**
      * The getter for the Drivetrain class.
@@ -40,9 +37,6 @@ public class Climb extends SubsystemBase {
 
         this.motor1.setInverted(RobotMap.CLIMB_MOTOR_1.inverted);
         this.motor2.setInverted(RobotMap.CLIMB_MOTOR_2.inverted);
-
-        this.bottomLimitSwitch = new DigitalInput(RobotMap.BOTTOM_LIMIT_SWITCH_DIO_PORT);
-        this.topLimitSwitch = new DigitalInput(RobotMap.TOP_LIMIT_SWITCH_DIO_PORT);
     }
 
     public void setPercentOutput(double speed) {

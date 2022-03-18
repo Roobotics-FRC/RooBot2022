@@ -56,15 +56,20 @@ public class Shooter extends SubsystemBase {
         motor1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         motor1.setSensorPhase(RobotMap.SHOOTER_MOTOR_1.encoderPhase);
 
-        motor1.config_kF(0, RobotMap.SHOOTER_PID_GAINS.kF);
-        motor1.config_kP(0, RobotMap.SHOOTER_PID_GAINS.kP);
-        motor1.config_kI(0, RobotMap.SHOOTER_PID_GAINS.kI);
-        motor1.config_kD(0, RobotMap.SHOOTER_PID_GAINS.kD);
+        motor1.config_kF(RobotMap.SHOOTER_FAR_ID, RobotMap.SHOOTER_PID_GAINS_FAR.kF);
+        motor1.config_kP(RobotMap.SHOOTER_FAR_ID, RobotMap.SHOOTER_PID_GAINS_FAR.kP);
+        motor1.config_kI(RobotMap.SHOOTER_FAR_ID, RobotMap.SHOOTER_PID_GAINS_FAR.kI);
+        motor1.config_kD(RobotMap.SHOOTER_FAR_ID, RobotMap.SHOOTER_PID_GAINS_FAR.kD);
 
-        motor1.config_kF(1, RobotMap.SHOOTER_PID_GAINS_CLOSE.kF);
-        motor1.config_kP(1, RobotMap.SHOOTER_PID_GAINS_CLOSE.kP);
-        motor1.config_kI(1, RobotMap.SHOOTER_PID_GAINS_CLOSE.kI);
-        motor1.config_kD(1, RobotMap.SHOOTER_PID_GAINS_CLOSE.kD);
+        motor1.config_kF(RobotMap.SHOOTER_MID_ID, RobotMap.SHOOTER_PID_GAINS_MID.kF);
+        motor1.config_kP(RobotMap.SHOOTER_MID_ID, RobotMap.SHOOTER_PID_GAINS_MID.kP);
+        motor1.config_kI(RobotMap.SHOOTER_MID_ID, RobotMap.SHOOTER_PID_GAINS_MID.kI);
+        motor1.config_kD(RobotMap.SHOOTER_MID_ID, RobotMap.SHOOTER_PID_GAINS_MID.kD);
+
+        motor1.config_kF(RobotMap.SHOOTER_CLOSE_ID, RobotMap.SHOOTER_PID_GAINS_CLOSE.kF);
+        motor1.config_kP(RobotMap.SHOOTER_CLOSE_ID, RobotMap.SHOOTER_PID_GAINS_CLOSE.kP);
+        motor1.config_kI(RobotMap.SHOOTER_CLOSE_ID, RobotMap.SHOOTER_PID_GAINS_CLOSE.kI);
+        motor1.config_kD(RobotMap.SHOOTER_CLOSE_ID, RobotMap.SHOOTER_PID_GAINS_CLOSE.kD);
 
         angleSolenoid = new DoubleSolenoid(RobotMap.PCM_PORT, PneumaticsModuleType.CTREPCM, RobotMap.SHOOTER_ANGLE_SOLENOID_DEPLOY, RobotMap.SHOOTER_ANGLE_SOLENOID_RETRACT);
     }
@@ -73,11 +78,13 @@ public class Shooter extends SubsystemBase {
         motor1.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
         motor2.set(ControlMode.PercentOutput, RobotMap.constrainPercentOutput(speed));
     }
-    public void setVelocity(double speed, Boolean close) {
-        if (close) {
-            motor1.selectProfileSlot(1, 0);
+    public void setVelocity(double speed) {
+        if (speed > 105000) {
+            motor1.selectProfileSlot(RobotMap.SHOOTER_FAR_ID, 0);
+        } else if (speed < 50000) {
+            motor1.selectProfileSlot(RobotMap.SHOOTER_CLOSE_ID, 0);
         } else {
-            motor1.selectProfileSlot(0, 0);
+            motor1.selectProfileSlot(RobotMap.SHOOTER_MID_ID, 0);
         }
         motor1.set(ControlMode.Velocity, speed);
     }

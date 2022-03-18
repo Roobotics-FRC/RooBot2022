@@ -19,7 +19,7 @@ public class ShootAgainstWall extends CommandBase {
 
     @Override
     public void execute() {
-        shooter.setVelocity(RobotMap.SHOOTER_WALL_VELOCITY, true);
+        shooter.setVelocity(RobotMap.SHOOTER_WALL_VELOCITY);
         if (Math.abs(shooter.getVelocity() - RobotMap.SHOOTER_WALL_VELOCITY) < 500) {
             shooter.feed();
         } else {

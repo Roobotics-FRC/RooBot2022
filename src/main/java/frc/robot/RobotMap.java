@@ -33,6 +33,7 @@ public class RobotMap {
     // OPERATOR CONTROLLER
     public static final int SHOOTER_SHOOT_BUTTON = 2;
     public static final int SHOOTER_SHOOT_WITH_VISION_BUTTON = 1;
+    public static final int SHOOTER_SHOOT_SIDE_WALL_BUTTON = 4;
     public static final int SHOOTER_FEED_BUTTON = 5;
     public static final int SHOOTER_REVERSE_FEED_BUTTON = 6;
     public static final int INTAKE_INTAKE_AXIS = 2;
@@ -86,13 +87,18 @@ public class RobotMap {
     // PID GAINS
     public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.015, 0.01, 0);
     public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0, 0.002, 0.000003, 0);
-    // public static final PID SHOOTER_PID_GAINS = new PID(0, 0.04, 0.0001, 0);
-    public static final PID SHOOTER_PID_GAINS = new PID(0.0075, 0.3, 0, 1);
 
-    public static final PID SHOOTER_PID_GAINS_CLOSE = new PID(0, 0.02, 0, 0);
+    public static final PID SHOOTER_PID_GAINS_FAR = new PID(0.0075, 0.3, 0, 1);
+    public static final int SHOOTER_FAR_ID = 0;
+
+    public static final PID SHOOTER_PID_GAINS_MID = new PID(0.007, 0.15, 0, 0.6);
+    public static final int SHOOTER_MID_ID = 1;
+
+    public static final PID SHOOTER_PID_GAINS_CLOSE = new PID(0, 0.03, 0.0001, 0);
+    public static final int SHOOTER_CLOSE_ID = 2;
 
     // Constants
-    public static final double SHOOTER_SETPOINT_THRESHOLD = 1500;
+    public static final double SHOOTER_SETPOINT_THRESHOLD = 1250;
     public static final double ALIGN_ANGLE_THRESHOLD = 5;
     public static final double ENCODER_COUNTS_PER_REV = 4096;
     public static final double DRIVE_COUNTS_PER_REV = 2048;
@@ -104,6 +110,7 @@ public class RobotMap {
     // SHOOTER CONSTANTS
     public static final double SHOOTER_WALL_VELOCITY = 85000;
     public static final double SHOOTER_LOW_VELOCITY = 40000;
+    public static final double SHOOTER_SIDE_WALL_VELOCITY = 91000;
     
     // Conversion factors
     // public static final double ENCODER_UNITS_TO_INCHES = DRIVE_WHEEL_DIAMETER_IN * Math.PI / DRIVE_ENCODER_COUNTS_PER_REV / DRIVE_GEARBOX_RATIO;
