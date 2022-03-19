@@ -114,10 +114,10 @@ public class Robot extends TimedRobot {
         new ShooterShootAuton().withTimeout(2.5)
         ),
 
-        new DriveTurnToAngleWithoutVision(-30).withTimeout(1.25),
+        new DriveTurnToAngleWithoutVision(-25).withTimeout(1.25),
 
         new ParallelCommandGroup(
-         new DriveDistanceAuton(125),
+         new DriveDistanceAuton(115),
          new IntakeAuton()
         ).withTimeout(3.5),
 
