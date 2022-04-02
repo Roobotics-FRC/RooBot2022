@@ -15,18 +15,18 @@ public class RobotMap {
 
     static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
-    public static double visionGetShooterSpeed() {
-        return getShooterVelocityFromDistance();
-    }
-
     public static double getDistanceFromCamera() {
         double x = table.getEntry("ty").getDouble(0);
-        return 13 - 0.542*x + 0.0214*Math.pow(x, 2) - 0.00118*Math.pow(x, 3) + 0.0000267*Math.pow(x, 4);
+        return 10.7 - 0.433*x + 0.0121*Math.pow(x, 2) - 0.0000802*Math.pow(x, 3) + 0.0000182 * Math.pow(x, 4) - 0.00000182 * Math.pow(x, 5) + 0.0000000306 * Math.pow(x, 6);
     }
 
-    public static double getShooterVelocityFromDistance() {
+    public static double getShooterVelocityFromDistanceFar() {
         double x = getDistanceFromCamera();
-        return 156714 - 20495 * x + 1977*Math.pow(x, 2) - 53.3*Math.pow(x, 3);
+        return 125000 - 2724 * x - 865 * Math.pow(x, 2) + 101 * Math.pow(x, 3) - 2.6 * Math.pow(x, 4);
+    }
+    public static double getShooterVelocityFromDistanceClose() {
+        double x = getDistanceFromCamera();
+        return -210286 + 96012 * x - 10714 * Math.pow(x, 2) + 417 * Math.pow(x, 3);
     }
 
     // Button Ids
@@ -85,13 +85,13 @@ public class RobotMap {
     public static final MotorConfig INTAKE_MOTOR = new MotorConfig(31, false, true);
 
     // PID GAINS
-    public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.015, 0.01, 0);
+    public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.015, 0.02, 0);
     public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0, 0.002, 0.000003, 0);
 
-    public static final PID SHOOTER_PID_GAINS_FAR = new PID(0.0075, 0.3, 0, 1);
+    public static final PID SHOOTER_PID_GAINS_FAR = new PID(0.0075, 0.3, 0.00001, 3);
     public static final int SHOOTER_FAR_ID = 0;
 
-    public static final PID SHOOTER_PID_GAINS_MID = new PID(0.007, 0.15, 0, 0.6);
+    public static final PID SHOOTER_PID_GAINS_MID = new PID(0.007, 0.15, 0.00002, 4);
     public static final int SHOOTER_MID_ID = 1;
 
     public static final PID SHOOTER_PID_GAINS_CLOSE = new PID(0, 0.03, 0.0001, 0);
@@ -99,7 +99,7 @@ public class RobotMap {
 
     // Constants
     public static final double SHOOTER_SETPOINT_THRESHOLD = 1250;
-    public static final double ALIGN_ANGLE_THRESHOLD = 5;
+    public static final double ALIGN_ANGLE_THRESHOLD = 4;
     public static final double ENCODER_COUNTS_PER_REV = 4096;
     public static final double DRIVE_COUNTS_PER_REV = 2048;
     public static final double DRIVE_GEAR_RATIO = 10.86;

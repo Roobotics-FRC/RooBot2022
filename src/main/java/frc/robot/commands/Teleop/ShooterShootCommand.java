@@ -18,14 +18,24 @@ public class ShooterShootCommand extends CommandBase {
     public void initialize() {
         shooter.stop();
         shooter.setShooterAngled();
+        SmartDashboard.putNumber("SHOOTER_SET", 0);
     }
 
     @Override
     public void execute() {
         double speed = 0;
         if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON)) {
-            shooter.setShooterAngled();
-            speed = RobotMap.visionGetShooterSpeed();
+            double dist = RobotMap.getDistanceFromCamera();
+            double threshold = 10;
+            if (dist >= threshold) {
+                speed = RobotMap.getShooterVelocityFromDistanceFar();
+                shooter.setShooterAngled();
+                threshold = 9.8;
+            } else {
+                speed = RobotMap.getShooterVelocityFromDistanceClose();
+                shooter.setShooterFlat();
+                threshold = 10.2;
+            }
             shooter.setVelocity(speed);
             if (Math.abs(shooter.getVelocity() - speed) < RobotMap.SHOOTER_SETPOINT_THRESHOLD) {
                 SmartDashboard.putBoolean("SHOOTER_READY", true);
@@ -46,7 +56,7 @@ public class ShooterShootCommand extends CommandBase {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             }
         } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_SIDE_WALL_BUTTON)) {
-            shooter.setShooterAngled();
+            shooter.setShooterFlat();
             speed = RobotMap.SHOOTER_SIDE_WALL_VELOCITY;
             shooter.setVelocity(speed);
             if (Math.abs(shooter.getVelocity() - speed) < RobotMap.SHOOTER_SETPOINT_THRESHOLD) {
@@ -71,7 +81,6 @@ public class ShooterShootCommand extends CommandBase {
         }
         SmartDashboard.putNumber("ShooterVelocity", shooter.getVelocity());
         SmartDashboard.putNumber("DISTANCE", RobotMap.getDistanceFromCamera());
-        SmartDashboard.putNumber("SPEED", RobotMap.getShooterVelocityFromDistance());
     }
 
     @Override

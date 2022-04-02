@@ -20,8 +20,8 @@ public class ShooterShootAuton extends CommandBase {
 
     @Override
     public void execute() {
-        shooter.setVelocity(RobotMap.visionGetShooterSpeed());
-        if (Math.abs(shooter.getVelocity() - RobotMap.visionGetShooterSpeed()) < 800) {
+        shooter.setVelocity(RobotMap.getShooterVelocityFromDistanceFar());
+        if (Math.abs(shooter.getVelocity() - RobotMap.getShooterVelocityFromDistanceFar()) < 800) {
             shooter.feed();
         } else {
             shooter.stopFeeder();
