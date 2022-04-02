@@ -20,7 +20,8 @@ public class DriveTurnToAngle extends CommandBase {
     public void initialize() {
         drivetrain.resetPigeonYaw();
         drivetrain.enable();
-        drivetrain.setSetpoint(-table.getEntry("tx").getDouble(0));
+        double offset = Math.toDegrees(Math.atan(RobotMap.VISION_ALIGN_OFFSET/RobotMap.getDistanceFromCamera()));
+        drivetrain.setSetpoint(-table.getEntry("tx").getDouble(0) + offset);
     }
 
     @Override
@@ -28,7 +29,8 @@ public class DriveTurnToAngle extends CommandBase {
         if (OI.getInstance().getOperatorController().getRawButton(RobotMap.DRIVE_TURN_TO_TARGET_BUTTON)) {
             drivetrain.resetPigeonYaw();
             drivetrain.enable();
-            drivetrain.setSetpoint(-table.getEntry("tx").getDouble(0));
+            double offset = Math.toDegrees(Math.atan(RobotMap.VISION_ALIGN_OFFSET/RobotMap.getDistanceFromCamera()));
+            drivetrain.setSetpoint(-table.getEntry("tx").getDouble(0) + offset);
         }
         if (Math.abs(table.getEntry("tx").getDouble(0)) < RobotMap.ALIGN_ANGLE_THRESHOLD) {
             if (!OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_BUTTON) && !OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON)) {

@@ -17,16 +17,16 @@ public class RobotMap {
 
     public static double getDistanceFromCamera() {
         double x = table.getEntry("ty").getDouble(0);
-        return 10.7 - 0.433*x + 0.0121*Math.pow(x, 2) - 0.0000802*Math.pow(x, 3) + 0.0000182 * Math.pow(x, 4) - 0.00000182 * Math.pow(x, 5) + 0.0000000306 * Math.pow(x, 6);
+        return 10.9 - 0.42 * x + 0.0144 * Math.pow(x, 2) - 0.000564 * Math.pow(x, 3) + 0.0000122 * Math.pow(x, 4);
     }
 
     public static double getShooterVelocityFromDistanceFar() {
         double x = getDistanceFromCamera();
-        return 125000 - 2724 * x - 865 * Math.pow(x, 2) + 101 * Math.pow(x, 3) - 2.6 * Math.pow(x, 4);
+        return -195714 + 65605 * x + -5149 * Math.pow(x, 2) + 139 * Math.pow(x, 3);
     }
     public static double getShooterVelocityFromDistanceClose() {
         double x = getDistanceFromCamera();
-        return -210286 + 96012 * x - 10714 * Math.pow(x, 2) + 417 * Math.pow(x, 3);
+        return 3414 + 32137 * x - 5214 * Math.pow(x, 2) + 292 * Math.pow(x, 3);
     }
 
     // Button Ids
@@ -99,6 +99,7 @@ public class RobotMap {
     public static final int SHOOTER_CLOSE_ID = 2;
 
     // Constants
+    public static final double VISION_ALIGN_OFFSET = 0.5;
     public static final double SHOOTER_SETPOINT_THRESHOLD = 1250;
     public static final double ALIGN_ANGLE_THRESHOLD = 4;
     public static final double ENCODER_COUNTS_PER_REV = 4096;

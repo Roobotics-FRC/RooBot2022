@@ -18,6 +18,7 @@ public class ShooterShootCommand extends CommandBase {
     public void initialize() {
         shooter.stop();
         shooter.setShooterAngled();
+        SmartDashboard.putNumber("SETSPEED", 0);
     }
 
     @Override
@@ -25,15 +26,15 @@ public class ShooterShootCommand extends CommandBase {
         double speed = 0;
         if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON) || OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON_MANUAL)) {
             double dist = RobotMap.getDistanceFromCamera();
-            double threshold = 10;
+            double threshold = 9.75;
             if (dist >= threshold) {
                 speed = RobotMap.getShooterVelocityFromDistanceFar();
                 shooter.setShooterAngled();
-                threshold = 9.8;
+                threshold = 9.5;
             } else {
                 speed = RobotMap.getShooterVelocityFromDistanceClose();
                 shooter.setShooterFlat();
-                threshold = 10.2;
+                threshold = 10;
             }
             shooter.setVelocity(speed);
             if (Math.abs(shooter.getVelocity() - speed) < RobotMap.SHOOTER_SETPOINT_THRESHOLD) {
@@ -61,8 +62,9 @@ public class ShooterShootCommand extends CommandBase {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             }
         } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_SIDE_WALL_BUTTON)) {
-            shooter.setShooterFlat();
-            speed = RobotMap.SHOOTER_SIDE_WALL_VELOCITY;
+            shooter.setShooterAngled();
+            // speed = RobotMap.SHOOTER_SIDE_WALL_VELOCITY;
+            speed = SmartDashboard.getNumber("SETSPEED", 0);
             shooter.setVelocity(speed);
             if (Math.abs(shooter.getVelocity() - speed) < RobotMap.SHOOTER_SETPOINT_THRESHOLD) {
                 SmartDashboard.putBoolean("SHOOTER_READY", true);
