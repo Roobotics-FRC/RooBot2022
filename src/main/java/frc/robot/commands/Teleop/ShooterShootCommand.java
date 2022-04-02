@@ -18,13 +18,12 @@ public class ShooterShootCommand extends CommandBase {
     public void initialize() {
         shooter.stop();
         shooter.setShooterAngled();
-        SmartDashboard.putNumber("SHOOTER_SET", 0);
     }
 
     @Override
     public void execute() {
         double speed = 0;
-        if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON)) {
+        if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON) || OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON_MANUAL)) {
             double dist = RobotMap.getDistanceFromCamera();
             double threshold = 10;
             if (dist >= threshold) {
@@ -40,7 +39,13 @@ public class ShooterShootCommand extends CommandBase {
             if (Math.abs(shooter.getVelocity() - speed) < RobotMap.SHOOTER_SETPOINT_THRESHOLD) {
                 SmartDashboard.putBoolean("SHOOTER_READY", true);
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0.8);
+                if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON)) {
+                    shooter.feed();
+                }
             } else {
+                if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON)) {
+                    shooter.stopFeeder();
+                }
                 SmartDashboard.putBoolean("SHOOTER_READY", false);
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             }
@@ -77,10 +82,14 @@ public class ShooterShootCommand extends CommandBase {
         } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_REVERSE_FEED_BUTTON)) {
             shooter.reverseFeed();
         } else {
-            shooter.stopFeeder();
+            if (!OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON)) {
+                shooter.stopFeeder();
+            }
         }
         SmartDashboard.putNumber("ShooterVelocity", shooter.getVelocity());
         SmartDashboard.putNumber("DISTANCE", RobotMap.getDistanceFromCamera());
+        SmartDashboard.putNumber("SPEED_CLOSE", RobotMap.getShooterVelocityFromDistanceClose());
+        SmartDashboard.putNumber("SPEED_FAR", RobotMap.getShooterVelocityFromDistanceFar());
     }
 
     @Override

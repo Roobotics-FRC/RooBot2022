@@ -5,9 +5,11 @@ import frc.robot.subsystems.Intake;
 
 public class IntakeAuton extends CommandBase {
     public Intake intake;
+    private double speed;
 
-    public IntakeAuton() {
+    public IntakeAuton(double speed) {
         addRequirements(this.intake = Intake.getInstance());
+        this.speed = speed;
     }
 
     @Override
@@ -18,7 +20,7 @@ public class IntakeAuton extends CommandBase {
 
     @Override
     public void execute() {
-        intake.setIntake(0.6);
+        intake.setIntake(speed);
     }
 
     @Override

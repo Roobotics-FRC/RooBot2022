@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
         new IntakeDeployAuton().withTimeout(2),
         new ParallelCommandGroup(
          new DriveDistanceAuton(90),
-         new IntakeAuton()
+         new IntakeAuton(0.5)
         ).withTimeout(3),
         new DriveTurnToAngle().withTimeout(2),
         new ShooterShootAuton().withTimeout(10)
@@ -106,30 +106,31 @@ public class Robot extends TimedRobot {
 
         new ParallelCommandGroup(
          new DriveDistanceAuton(90),
-         new IntakeAuton()
+         new IntakeAuton(0.5)
         ).withTimeout(2.5),
 
         new ParallelCommandGroup(
-        new DriveTurnToAngle().withTimeout(0.5),
-        new ShooterShootAuton().withTimeout(2.5)
-        ),
+        new DriveTurnToAngle(),
+        new ShooterShootAuton()
+        ).withTimeout(2.5),
 
-        new DriveTurnToAngleWithoutVision(-25).withTimeout(1.25),
+        new DriveTurnToAngleWithoutVision(-18).withTimeout(1.25),
 
         new ParallelCommandGroup(
          new DriveDistanceAuton(115),
-         new IntakeAuton()
+         new IntakeAuton(0.5)
         ).withTimeout(3.5),
 
         new ParallelCommandGroup(
-         new DriveDistanceAuton(-100),
-         new IntakeAuton()
+         new DriveDistanceAuton(-120),
+         new IntakeAuton(0.2)
         ).withTimeout(1.5),
 
        new ParallelCommandGroup(
-         new DriveTurnToAngle().withTimeout(0.5),
-         new ShooterShootAuton().withTimeout(5)
-       )
+          new IntakeAuton(0.2),
+         new DriveTurnToAngle(),
+         new ShooterShootAuton()
+       ).withTimeout(5)
       );
     }
    if (m_autonomousCommand != null) {
