@@ -24,6 +24,13 @@ public class ClimbDefaultCommand extends CommandBase {
         } else {
             climb.stop();
         }
+        if (OI.getInstance().getOperatorController().getRawButtonPressed(RobotMap.DEPLOY_CLIMB_ARMS)) {
+            if (climb.armsDeployed()) {
+                climb.retractArms();
+            } else {
+                climb.deployArms();
+            }
+        }
     }
 
     @Override

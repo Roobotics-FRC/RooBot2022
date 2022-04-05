@@ -4,6 +4,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -12,6 +15,8 @@ public class Climb extends SubsystemBase {
 
     private WPI_TalonSRX motor1;
     private WPI_TalonSRX motor2;
+
+    private DoubleSolenoid armSolenoid;
 
     /**
      * The getter for the Drivetrain class.
@@ -37,6 +42,8 @@ public class Climb extends SubsystemBase {
 
         this.motor1.setInverted(RobotMap.CLIMB_MOTOR_1.inverted);
         this.motor2.setInverted(RobotMap.CLIMB_MOTOR_2.inverted);
+
+        armSolenoid = new DoubleSolenoid(RobotMap.PCM_PORT, PneumaticsModuleType.CTREPCM, RobotMap.CLIMB_ARM_SOLENOID_DEPLOY, RobotMap.CLIMB_ARM_SOLENOID_RETRACT);
     }
 
     public void setPercentOutput(double speed) {
@@ -46,6 +53,18 @@ public class Climb extends SubsystemBase {
 
     public void setClimb(double speed) {
         setPercentOutput(speed);
+    }
+
+    public boolean armsDeployed() {
+        return armSolenoid.get() == RobotMap.DEPLOYED;
+    }
+
+    public void deployArms() {
+        armSolenoid.set(RobotMap.DEPLOYED);
+    }
+
+    public void retractArms() {
+        armSolenoid.set(RobotMap.RETRACTED);
     }
 
     public void stop() {

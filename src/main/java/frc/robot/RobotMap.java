@@ -42,6 +42,7 @@ public class RobotMap {
     public static final int INTAKE_DEPLOY_INTAKE_BUTTON = 9;
     public static final int INTAKE_RETRACT_INTAKE_BUTTON = 10;
     public static final int CLIMB_AXIS = 1;
+    public static final int DEPLOY_CLIMB_ARMS = 10;
     public static final int DRIVE_TURN_TO_TARGET_BUTTON = 7;
     public static final int KILL_COMMANDS_BUTTON = 8;
     // CYLE CONTROLLER
@@ -65,6 +66,8 @@ public class RobotMap {
     public static final int INTAKE_DEPLOY_SOLENOID_RETRACT = 0;
     public static final int SHOOTER_ANGLE_SOLENOID_DEPLOY = 6;
     public static final int SHOOTER_ANGLE_SOLENOID_RETRACT = 1;
+    public static final int CLIMB_ARM_SOLENOID_DEPLOY = 5;
+    public static final int CLIMB_ARM_SOLENOID_RETRACT = 2;
     public static final int BOTTOM_LIMIT_SWITCH_DIO_PORT = 1;
     public static final int TOP_LIMIT_SWITCH_DIO_PORT = 0;
 
