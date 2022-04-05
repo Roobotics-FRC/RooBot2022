@@ -26,7 +26,7 @@ public class RobotMap {
     }
     public static double getShooterVelocityFromDistanceClose() {
         double x = getDistanceFromCamera();
-        return 3414 + 32137 * x - 5214 * Math.pow(x, 2) + 292 * Math.pow(x, 3);
+        return -1850000.0 + 948889 * x - 162769 * Math.pow(x, 2) + 9814 * Math.pow(x, 3) + 98.8 * Math.pow(x, 4) - 20.7 * Math.pow(x, 5);
     }
 
     // Button Ids
@@ -89,7 +89,7 @@ public class RobotMap {
     public static final MotorConfig INTAKE_MOTOR = new MotorConfig(31, false, true);
 
     // PID GAINS
-    public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.01, 0.025, 0);
+    public static final PID DRIVETRAIN_ANG_PID_GAINS = new PID(0, 0.01, 0.03, 0);
     public static final PID DRIVETRAIN_TALON_PID_GAINS = new PID(0, 0.002, 0.000003, 0);
 
     public static final PID SHOOTER_PID_GAINS_FAR = new PID(0.0075, 0.3, 0.00001, 3);

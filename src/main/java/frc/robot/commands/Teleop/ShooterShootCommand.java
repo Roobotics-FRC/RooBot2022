@@ -62,7 +62,7 @@ public class ShooterShootCommand extends CommandBase {
                 OI.getInstance().getOperatorController().setRumble(RumbleType.kRightRumble, 0);
             }
         } else if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_SIDE_WALL_BUTTON)) {
-            shooter.setShooterAngled();
+            shooter.setShooterFlat();
             // speed = RobotMap.SHOOTER_SIDE_WALL_VELOCITY;
             speed = SmartDashboard.getNumber("SETSPEED", 0);
             shooter.setVelocity(speed);

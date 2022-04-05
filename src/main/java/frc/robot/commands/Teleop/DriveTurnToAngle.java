@@ -53,8 +53,8 @@ public class DriveTurnToAngle extends CommandBase {
     @Override
     public boolean isFinished() {
         boolean killBtn = OI.getInstance().getOperatorController().getRawButton(RobotMap.KILL_COMMANDS_BUTTON);
-        boolean leftKill = Math.abs(OI.getInstance().getCyleController().getAxis(RobotMap.DRIVE_LEFT_AXIS)) > 0.12;
-        boolean rightKill = Math.abs(OI.getInstance().getCyleController().getAxis(RobotMap.DRIVE_RIGHT_AXIS)) > 0.12;
+        boolean leftKill = Math.abs(OI.getInstance().getCyleController().getAxis(RobotMap.DRIVE_LEFT_AXIS)) > 0.08;
+        boolean rightKill = Math.abs(OI.getInstance().getCyleController().getAxis(RobotMap.DRIVE_RIGHT_AXIS)) > 0.08;
         // boolean shooting = OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON) || OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_BUTTON);
         // boolean inTolerance = Math.abs((-table.getEntry("tx").getDouble(0)) - drivetrain.getPigeonAngle()) < 3;
         // return inTolerance || killBtn;
