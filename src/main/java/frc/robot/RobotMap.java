@@ -17,7 +17,7 @@ public class RobotMap {
 
     public static double getDistanceFromCamera() {
         double x = table.getEntry("ty").getDouble(0);
-        return 10.9 - 0.42 * x + 0.0144 * Math.pow(x, 2) - 0.000564 * Math.pow(x, 3) + 0.0000122 * Math.pow(x, 4);
+        return 10.6 - 0.441 * x + 0.0262 * Math.pow(x, 2) - 0.000896 * Math.pow(x, 3);
     }
 
     public static double getShooterVelocityFromDistanceFar() {
@@ -26,7 +26,7 @@ public class RobotMap {
     }
     public static double getShooterVelocityFromDistanceClose() {
         double x = getDistanceFromCamera();
-        return -1850000.0 + 948889 * x - 162769 * Math.pow(x, 2) + 9814 * Math.pow(x, 3) + 98.8 * Math.pow(x, 4) - 20.7 * Math.pow(x, 5);
+        return -1840000.0 + 948889 * x - 162769 * Math.pow(x, 2) + 9814 * Math.pow(x, 3) + 98.8 * Math.pow(x, 4) - 20.7 * Math.pow(x, 5);
     }
 
     // Button Ids
@@ -42,7 +42,6 @@ public class RobotMap {
     public static final int INTAKE_DEPLOY_INTAKE_BUTTON = 9;
     public static final int INTAKE_RETRACT_INTAKE_BUTTON = 10;
     public static final int CLIMB_AXIS = 1;
-    public static final int DEPLOY_CLIMB_ARMS = 10;
     public static final int DRIVE_TURN_TO_TARGET_BUTTON = 7;
     public static final int KILL_COMMANDS_BUTTON = 8;
     // CYLE CONTROLLER
@@ -52,6 +51,7 @@ public class RobotMap {
     public static final int DRIVE_RIGHT_AXIS = 4;
     public static final int DRIVER_INTAKE_DEPLOY_INTAKE_BUTTON = 2;
     public static final int DRIVER_INTAKE_RETRACT_INTAKE_BUTTON = 3;
+    public static final int TOGGLE_CLIMB_ARMS = 12;
 
     // OI devices
     public static final int LEFT_DRIVE_JOYSTICK_PORT = 0;
@@ -102,9 +102,9 @@ public class RobotMap {
     public static final int SHOOTER_CLOSE_ID = 2;
 
     // Constants
-    public static final double VISION_ALIGN_OFFSET = 0.5;
+    public static final double VISION_ALIGN_OFFSET = 0.3;
     public static final double SHOOTER_SETPOINT_THRESHOLD = 1250;
-    public static final double ALIGN_ANGLE_THRESHOLD = 4;
+    public static final double ALIGN_ANGLE_THRESHOLD = 3;
     public static final double ENCODER_COUNTS_PER_REV = 4096;
     public static final double DRIVE_COUNTS_PER_REV = 2048;
     public static final double DRIVE_GEAR_RATIO = 10.86;

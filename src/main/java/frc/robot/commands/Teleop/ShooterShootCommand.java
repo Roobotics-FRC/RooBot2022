@@ -26,15 +26,15 @@ public class ShooterShootCommand extends CommandBase {
         double speed = 0;
         if (OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON) || OI.getInstance().getOperatorController().getRawButton(RobotMap.SHOOTER_SHOOT_WITH_VISION_BUTTON_MANUAL)) {
             double dist = RobotMap.getDistanceFromCamera();
-            double threshold = 9.75;
+            double threshold = 9;
             if (dist >= threshold) {
                 speed = RobotMap.getShooterVelocityFromDistanceFar();
                 shooter.setShooterAngled();
-                threshold = 9.5;
+                threshold = 8.8;
             } else {
                 speed = RobotMap.getShooterVelocityFromDistanceClose();
                 shooter.setShooterFlat();
-                threshold = 10;
+                threshold = 9.2;
             }
             shooter.setVelocity(speed);
             if (Math.abs(shooter.getVelocity() - speed) < RobotMap.SHOOTER_SETPOINT_THRESHOLD) {

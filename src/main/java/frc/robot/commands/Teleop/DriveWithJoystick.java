@@ -1,5 +1,6 @@
 package frc.robot.commands.Teleop;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMap;
 import frc.robot.input.OI;
@@ -29,7 +30,13 @@ public class DriveWithJoystick extends CommandBase {
 
         // CYLE CONTROL MARK I
         double y1 = OI.getInstance().getCyleController().getAxis(RobotMap.DRIVE_LEFT_AXIS);
+        if (y1 > 0) {
+            y1 *= 1.04;
+        }
         double y2 = OI.getInstance().getCyleController().getAxis(RobotMap.DRIVE_RIGHT_AXIS);
+
+        SmartDashboard.putNumber("LEFT", y1);
+        SmartDashboard.putNumber("RIGHT", y2);
 
         drivetrain.setLeftPercentOutput(y1);
         drivetrain.setRightPercentOutput(y2);

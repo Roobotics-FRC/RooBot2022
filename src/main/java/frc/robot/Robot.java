@@ -17,6 +17,8 @@ import frc.robot.commands.Auton.DriveDistanceAuton;
 import frc.robot.commands.Auton.DriveTurnToAngleWithoutVision;
 import frc.robot.commands.Auton.IntakeAuton;
 import frc.robot.commands.Auton.IntakeDeployAuton;
+import frc.robot.commands.Auton.ShootAgainstWall;
+import frc.robot.commands.Auton.ShooterFeedBackwardsAuton;
 import frc.robot.commands.Auton.ShooterShootAuton;
 import frc.robot.commands.Teleop.ClimbDefaultCommand;
 import frc.robot.commands.Teleop.DriveTurnToAngle;
@@ -90,23 +92,25 @@ public class Robot extends TimedRobot {
     //   new IntakeDeployAuton().withTimeout(1),
     //   new DriveDistanceAuton(75)
     // );
-    if (OI.getInstance().getCyleController().getRawButton(1)) {
+    if (OI.getInstance().getCyleController().getRawButton(6)) {
+      // 2 BALL AGAINST WALL
       m_autonomousCommand = new SequentialCommandGroup(
         new IntakeDeployAuton().withTimeout(2),
         new ParallelCommandGroup(
-         new DriveDistanceAuton(90),
+         new DriveDistanceAuton(80),
          new IntakeAuton(0.5)
         ).withTimeout(3),
-        new DriveTurnToAngle().withTimeout(2),
-        new ShooterShootAuton().withTimeout(10)
+        new ShootAgainstWall()
         );
-    } else {
-      m_autonomousCommand = new SequentialCommandGroup(
+    } else if (OI.getInstance().getCyleController().getRawButton(7)) {
+        // 4 BALL
+        m_autonomousCommand = new SequentialCommandGroup(
         new IntakeDeployAuton().withTimeout(0.5),
 
         new ParallelCommandGroup(
          new DriveDistanceAuton(90),
-         new IntakeAuton(0.5)
+         new IntakeAuton(0.6),
+         new ShooterFeedBackwardsAuton()
         ).withTimeout(2.5),
 
         new ParallelCommandGroup(
@@ -114,24 +118,37 @@ public class Robot extends TimedRobot {
         new ShooterShootAuton()
         ).withTimeout(2.5),
 
-        new DriveTurnToAngleWithoutVision(-18).withTimeout(1.25),
+        new DriveTurnToAngleWithoutVision(-20).withTimeout(1.25),
 
         new ParallelCommandGroup(
-         new DriveDistanceAuton(115),
-         new IntakeAuton(0.5)
+         new DriveDistanceAuton(108),
+         new IntakeAuton(0.6),
+         new ShooterFeedBackwardsAuton()
         ).withTimeout(3.5),
 
         new ParallelCommandGroup(
          new DriveDistanceAuton(-120),
-         new IntakeAuton(0.2)
+         new IntakeAuton(0.5),
+         new ShooterFeedBackwardsAuton()
         ).withTimeout(1.5),
 
        new ParallelCommandGroup(
-          new IntakeAuton(0.2),
+         new IntakeAuton(0.4),
          new DriveTurnToAngle(),
          new ShooterShootAuton()
        ).withTimeout(5)
       );
+    } else {
+      // 2 BALL NORMAL
+      m_autonomousCommand = new SequentialCommandGroup(
+        new IntakeDeployAuton().withTimeout(2),
+        new ParallelCommandGroup(
+         new DriveDistanceAuton(80),
+         new IntakeAuton(0.5)
+        ).withTimeout(3),
+        new DriveTurnToAngle().withTimeout(2),
+        new ShooterShootAuton().withTimeout(10)
+        );
     }
    if (m_autonomousCommand != null) {
      m_autonomousCommand.schedule();

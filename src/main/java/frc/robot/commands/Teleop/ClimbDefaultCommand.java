@@ -15,6 +15,7 @@ public class ClimbDefaultCommand extends CommandBase {
     @Override
     public void initialize() {
         climb.stop();
+        climb.retractArms();
     }
 
     @Override
@@ -24,12 +25,10 @@ public class ClimbDefaultCommand extends CommandBase {
         } else {
             climb.stop();
         }
-        if (OI.getInstance().getOperatorController().getRawButtonPressed(RobotMap.DEPLOY_CLIMB_ARMS)) {
-            if (climb.armsDeployed()) {
-                climb.retractArms();
-            } else {
-                climb.deployArms();
-            }
+        if (OI.getInstance().getCyleController().getRawButtonPressed(RobotMap.TOGGLE_CLIMB_ARMS)) {
+            climb.retractArms();
+        } else if (OI.getInstance().getCyleController().getRawButtonReleased(RobotMap.TOGGLE_CLIMB_ARMS)) {
+            climb.deployArms();
         }
     }
 
