@@ -80,6 +80,8 @@ public class Drivetrain extends PIDSubsystem {
         right1.config_kI(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kI);
         right1.config_kD(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kD);
 
+        
+
         left1.config_kF(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kF);
         left1.config_kP(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kP);
         left1.config_kI(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kI);

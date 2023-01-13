@@ -14,23 +14,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Auton.DriveDistanceAuton;
-import frc.robot.commands.Auton.DriveTurnToAngleWithoutVision;
-import frc.robot.commands.Auton.IntakeAuton;
-import frc.robot.commands.Auton.IntakeDeployAuton;
-import frc.robot.commands.Auton.ShootAgainstWall;
-import frc.robot.commands.Auton.ShooterFeedBackwardsAuton;
-import frc.robot.commands.Auton.ShooterShootAuton;
-import frc.robot.commands.Teleop.ClimbDefaultCommand;
-import frc.robot.commands.Teleop.DriveTurnToAngle;
 import frc.robot.commands.Teleop.DriveWithJoystick;
-import frc.robot.commands.Teleop.IntakeDefaultCommand;
-import frc.robot.commands.Teleop.ShooterShootCommand;
 import frc.robot.input.OI;
-import frc.robot.subsystems.Camera;
-import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -54,15 +40,7 @@ public class Robot extends TimedRobot {
     compressor.enableDigital();
 
     Drivetrain.getInstance();
-    Shooter.getInstance();
-    Camera.getInstance();
-    Intake.getInstance();
-    Climb.getInstance();
-
-    CommandScheduler.getInstance().setDefaultCommand(Climb.getInstance(), new ClimbDefaultCommand());
-    CommandScheduler.getInstance().setDefaultCommand(Intake.getInstance(), new IntakeDefaultCommand());
     CommandScheduler.getInstance().setDefaultCommand(Drivetrain.getInstance(), new DriveWithJoystick());
-    CommandScheduler.getInstance().setDefaultCommand(Shooter.getInstance(), new ShooterShootCommand());
   }
 
   /**
@@ -86,74 +64,7 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {}
 
   @Override
-  public void autonomousInit() {
-    // m_autonomousCommand = new SequentialCommandGroup(
-    //   new ShootAgainstWall().withTimeout(8),
-    //   new IntakeDeployAuton().withTimeout(1),
-    //   new DriveDistanceAuton(75)
-    // );
-    if (OI.getInstance().getCyleController().getRawButton(6)) {
-      // 2 BALL AGAINST WALL
-      m_autonomousCommand = new SequentialCommandGroup(
-        new IntakeDeployAuton().withTimeout(2),
-        new ParallelCommandGroup(
-         new DriveDistanceAuton(80),
-         new IntakeAuton(0.5)
-        ).withTimeout(3),
-        new ShootAgainstWall()
-        );
-    } else if (OI.getInstance().getCyleController().getRawButton(7)) {
-        // 4 BALL
-        m_autonomousCommand = new SequentialCommandGroup(
-        new IntakeDeployAuton().withTimeout(0.5),
-
-        new ParallelCommandGroup(
-         new DriveDistanceAuton(90),
-         new IntakeAuton(0.6),
-         new ShooterFeedBackwardsAuton()
-        ).withTimeout(2.5),
-
-        new ParallelCommandGroup(
-        new DriveTurnToAngle(),
-        new ShooterShootAuton()
-        ).withTimeout(2.5),
-
-        new DriveTurnToAngleWithoutVision(-20).withTimeout(1.25),
-
-        new ParallelCommandGroup(
-         new DriveDistanceAuton(108),
-         new IntakeAuton(0.6),
-         new ShooterFeedBackwardsAuton()
-        ).withTimeout(3.5),
-
-        new ParallelCommandGroup(
-         new DriveDistanceAuton(-120),
-         new IntakeAuton(0.5),
-         new ShooterFeedBackwardsAuton()
-        ).withTimeout(1.5),
-
-       new ParallelCommandGroup(
-         new IntakeAuton(0.4),
-         new DriveTurnToAngle(),
-         new ShooterShootAuton()
-       ).withTimeout(5)
-      );
-    } else {
-      // 2 BALL NORMAL
-      m_autonomousCommand = new SequentialCommandGroup(
-        new IntakeDeployAuton().withTimeout(2),
-        new ParallelCommandGroup(
-         new DriveDistanceAuton(80),
-         new IntakeAuton(0.5)
-        ).withTimeout(3),
-        new DriveTurnToAngle().withTimeout(2),
-        new ShooterShootAuton().withTimeout(10)
-        );
-    }
-   if (m_autonomousCommand != null) {
-     m_autonomousCommand.schedule();
-   }
-  }
+  public void autonomousInit() {}
 
   /** This function is called periodically during autonomous. */
   @Override

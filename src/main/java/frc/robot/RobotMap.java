@@ -13,22 +13,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class RobotMap {
 
-    static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-
-    public static double getDistanceFromCamera() {
-        double x = table.getEntry("ty").getDouble(0);
-        return 10.6 - 0.441 * x + 0.0262 * Math.pow(x, 2) - 0.000896 * Math.pow(x, 3);
-    }
-
-    public static double getShooterVelocityFromDistanceFar() {
-        double x = getDistanceFromCamera();
-        return -195714 + 65605 * x + -5149 * Math.pow(x, 2) + 139 * Math.pow(x, 3);
-    }
-    public static double getShooterVelocityFromDistanceClose() {
-        double x = getDistanceFromCamera();
-        return -1840000.0 + 948889 * x - 162769 * Math.pow(x, 2) + 9814 * Math.pow(x, 3) + 98.8 * Math.pow(x, 4) - 20.7 * Math.pow(x, 5);
-    }
-
     // Button Ids
     // OPERATOR CONTROLLER
     public static final int SHOOTER_SHOOT_BUTTON = 2;
