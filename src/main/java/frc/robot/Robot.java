@@ -4,6 +4,16 @@
 
 package frc.robot;
 
+import java.util.List;
+
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -64,7 +74,16 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {}
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    DifferentialDriveVoltageConstraint vConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(RobotMap.FEED_FORWARD_kS, RobotMap.FEED_FORWARD_kV, RobotMap.FEED_FORWARD_kA), RobotMap.DRIVE_KINEMATICS, 10);
+
+    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(RobotMap.MAX_VELOCITY, RobotMap.MAX_ACCELERATION).setKinematics(RobotMap.DRIVE_KINEMATICS).addConstraint(vConstraint);
+
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(0)), List.of(new Translation2d(0.5, 0)), new Pose2d(1, 0, new Rotation2d(0)), trajectoryConfig);
+
+    Drivetrain.getInstance().resetOdometry(trajectory.getInitialPose());
+
+  }
 
   /** This function is called periodically during autonomous. */
   @Override

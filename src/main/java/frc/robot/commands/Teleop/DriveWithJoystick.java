@@ -1,5 +1,6 @@
 package frc.robot.commands.Teleop;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMap;
@@ -20,26 +21,18 @@ public class DriveWithJoystick extends CommandBase {
 
     @Override
     public void execute() {
-        // CYLE CONTROL EXPERIMENTAL
-        // double y = OI.getInstance().getCyleController().getAxis(4);
-        // double z = OI.getInstance().getCyleController().getAxis(0);
+        drivetrain.drive(OI.getInstance().getCyleController().getRawAxis(RobotMap.DRIVE_LEFT_AXIS), OI.getInstance().getCyleController().getRawAxis(RobotMap.DRIVE_RIGHT_AXIS));
 
-        // drivetrain.setLeftPercentOutput(y + z);
-        // drivetrain.setRightPercentOutput(y - z);
+        drivetrain.updateOdometry();
 
+        SmartDashboard.putNumber("CHASSIS_pX", drivetrain.getPose().getX());
+        SmartDashboard.putNumber("CHASSIS_pY", drivetrain.getPose().getY());
 
-        // CYLE CONTROL MARK I
-        double y1 = OI.getInstance().getCyleController().getAxis(RobotMap.DRIVE_LEFT_AXIS);
-        if (y1 > 0) {
-            y1 *= 1.04;
-        }
-        double y2 = OI.getInstance().getCyleController().getAxis(RobotMap.DRIVE_RIGHT_AXIS);
-
-        SmartDashboard.putNumber("LEFT", y1);
-        SmartDashboard.putNumber("RIGHT", y2);
-
-        drivetrain.setLeftPercentOutput(y1);
-        drivetrain.setRightPercentOutput(y2);
+        SmartDashboard.putNumber("Left_Vel", drivetrain.getLeftVelocity());
+        SmartDashboard.putNumber("Right_Vel", drivetrain.getRightVelocity());
+        SmartDashboard.putNumber("Chassis_vX", drivetrain.getChassisSpeeds().vxMetersPerSecond);
+        SmartDashboard.putNumber("Chassis_vY", drivetrain.getChassisSpeeds().vyMetersPerSecond);
+        SmartDashboard.putNumber("Chassis_vO",  Units.radiansToDegrees(drivetrain.getChassisSpeeds().omegaRadiansPerSecond));
     }
 
     @Override

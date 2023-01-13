@@ -2,8 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 
@@ -12,6 +11,22 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
  */
 
 public class RobotMap {
+
+    // MOTION PROFILING
+    public static final double FEED_FORWARD_kS = 0.57351;
+    public static final double FEED_FORWARD_kV = 1.7667;
+    public static final double FEED_FORWARD_kA = 0.05837;
+
+    public static final double FEED_BACK_VEL_kP = 1.2435;
+
+    public static final double MAX_VELOCITY = 3;
+    public static final double MAX_ACCELERATION = 1;
+
+    public static final double RAMSETE_B = 2;
+    public static final double RAMSETE_ZETA = 0.7;
+
+    public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(0.65);
+
 
     // Button Ids
     // OPERATOR CONTROLLER

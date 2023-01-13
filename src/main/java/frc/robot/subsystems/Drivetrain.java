@@ -3,11 +3,20 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.RobotMap;
@@ -15,19 +24,19 @@ import frc.robot.RobotMap;
 public class Drivetrain extends PIDSubsystem {
     private static volatile Drivetrain instance;
 
-    private TalonFX right1;
-    private TalonFX right2;
-    private TalonFX right3;
-    private TalonFX left1;
-    private TalonFX left2;
-    private TalonFX left3;
+    private WPI_TalonFX right1;
+    private WPI_TalonFX right2;
+    private WPI_TalonFX right3;
+    private WPI_TalonFX left1;
+    private WPI_TalonFX left2;
+    private WPI_TalonFX left3;
+
+    private DifferentialDrive tankDrive;
+
+    private DifferentialDriveOdometry tankOdometry;
 
     private PigeonIMU pigeon;
     private double initialAngle;
-
-    static final double pid_p = 0;
-    static final double pid_i = 0;
-    static final double pid_d = 0;
 
     /**
      * The getter for the Drivetrain class.
@@ -51,9 +60,14 @@ public class Drivetrain extends PIDSubsystem {
         this.right1 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1.id);
         this.right2 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_2.id);
         this.right3 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_3.id);
+        MotorControllerGroup rightGroup = new MotorControllerGroup(right1, right2, right3);
+
         this.left1 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_LEFT_1.id);
         this.left2 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_LEFT_2.id);
         this.left3 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_LEFT_3.id);
+        MotorControllerGroup leftGroup = new MotorControllerGroup(left1, left2, left3);
+
+        tankDrive = new DifferentialDrive(leftGroup, rightGroup);
 
         setNeutralMode(NeutralMode.Brake);
 
@@ -65,11 +79,6 @@ public class Drivetrain extends PIDSubsystem {
         this.left2.setInverted(RobotMap.DRIVETRAIN_MOTOR_LEFT_2.inverted);
         this.left3.setInverted(RobotMap.DRIVETRAIN_MOTOR_LEFT_3.inverted);  
 
-        this.right2.follow(right1);
-        this.right3.follow(right1);
-        this.left2.follow(left1);
-        this.left3.follow(left1);
-
         this.right1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         this.right1.setSensorPhase(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1.encoderPhase);
         this.left1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
@@ -80,8 +89,6 @@ public class Drivetrain extends PIDSubsystem {
         right1.config_kI(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kI);
         right1.config_kD(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kD);
 
-        
-
         left1.config_kF(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kF);
         left1.config_kP(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kP);
         left1.config_kI(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kI);
@@ -91,6 +98,51 @@ public class Drivetrain extends PIDSubsystem {
 
         getController().setTolerance(5, 10);
         getController().enableContinuousInput(0, 360);
+
+        tankOdometry = new DifferentialDriveOdometry(new Rotation2d(Units.degreesToRadians(getPigeonAngle())), new Pose2d(0, 0, new Rotation2d(0)));
+    }
+
+    public Pose2d getPose() {
+        return tankOdometry.getPoseMeters();
+    }
+
+    public void resetEncoders() {
+        left1.setSelectedSensorPosition(0);
+        right1.setSelectedSensorPosition(0);
+    }
+
+    public void resetOdometry(Pose2d pose) {
+        resetEncoders();
+        tankOdometry.resetPosition(pose, new Rotation2d(Units.inchesToMeters(getLeftPositionInches())));
+    }
+
+    public void updateOdometry() {
+        tankOdometry.update(new Rotation2d(Units.degreesToRadians(getPigeonAngle())), Units.inchesToMeters(getRightPositionInches()), Units.inchesToMeters(getLeftPositionInches()));
+    }
+
+    public void setWheelSpeeds(ChassisSpeeds chassisSpeeds) {
+        DifferentialDriveWheelSpeeds wSpeeds = RobotMap.DRIVE_KINEMATICS.toWheelSpeeds(chassisSpeeds);
+        drive(wSpeeds.leftMetersPerSecond, wSpeeds.rightMetersPerSecond);
+    }
+
+    public ChassisSpeeds getChassisSpeeds() {
+        return RobotMap.DRIVE_KINEMATICS.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getRightVelocity(),getLeftVelocity()));
+    }
+
+    public double getRightVelocity() {
+        return Units.inchesToMeters((right1.getSelectedSensorVelocity() / 2048) * (Math.PI * 12));
+    }
+
+    // Returns in METERS PER SECOND
+    public double getLeftVelocity() {
+        // 2048 encoder units per rotation
+        // Wheel diameter of 6 inches
+        // Wheel circumfrence of 12pi
+        return Units.inchesToMeters((left1.getSelectedSensorVelocity() / 2048) * (Math.PI * 12));
+    }
+
+    public void drive(double leftSpeed, double rightSpeed) {
+        tankDrive.tankDrive(leftSpeed, rightSpeed);
     }
 
     public double getPigeonAngle() {
