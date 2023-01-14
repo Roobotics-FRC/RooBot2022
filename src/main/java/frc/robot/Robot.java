@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.List;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Auton.DriveDistanceAuton;
 import frc.robot.commands.Teleop.DriveWithJoystick;
@@ -79,10 +82,32 @@ public class Robot extends TimedRobot {
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(RobotMap.MAX_VELOCITY, RobotMap.MAX_ACCELERATION).setKinematics(RobotMap.DRIVE_KINEMATICS).addConstraint(vConstraint);
 
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(0)), List.of(new Translation2d(0.5, 0)), new Pose2d(1, 0, new Rotation2d(0)), trajectoryConfig);
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+      new Pose2d(0, 0, new Rotation2d(0)),
+      List.of(new Translation2d(1, 0)),
+      new Pose2d(3, 0, new Rotation2d(0)),
+      trajectoryConfig);
 
     Drivetrain.getInstance().resetOdometry(trajectory.getInitialPose());
 
+    Drivetrain drivetrain = Drivetrain.getInstance();
+    RamseteCommand ramseteCommand = new RamseteCommand(
+        trajectory,
+        drivetrain::getPose,
+        new RamseteController(RobotMap.RAMSETE_B, RobotMap.RAMSETE_ZETA),
+        new SimpleMotorFeedforward(RobotMap.FEED_FORWARD_kS, RobotMap.FEED_FORWARD_kV, RobotMap.FEED_FORWARD_kA),
+        RobotMap.DRIVE_KINEMATICS,
+        drivetrain::getWheelSpeeds,
+        new PIDController(RobotMap.FEED_BACK_VEL_kP, 0, 0),
+        new PIDController(RobotMap.FEED_BACK_VEL_kP, 0, 0),
+        drivetrain::setMotorVoltage,
+        drivetrain);
+
+      m_autonomousCommand = ramseteCommand.andThen(() -> drivetrain.setMotorVoltage(0, 0));
+
+      if (m_autonomousCommand != null) {
+        m_autonomousCommand.schedule();
+      }
   }
 
   /** This function is called periodically during autonomous. */

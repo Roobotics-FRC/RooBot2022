@@ -71,6 +71,12 @@ public class Drivetrain extends PIDSubsystem {
 
         setNeutralMode(NeutralMode.Brake);
 
+        right2.follow(right1);
+        right3.follow(right1);
+
+        left2.follow(left1);
+        left3.follow(left1);
+
         this.right1.setInverted(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1.inverted);
         this.right2.setInverted(RobotMap.DRIVETRAIN_MOTOR_RIGHT_2.inverted);
         this.right3.setInverted(RobotMap.DRIVETRAIN_MOTOR_RIGHT_3.inverted);
@@ -102,6 +108,16 @@ public class Drivetrain extends PIDSubsystem {
         tankOdometry = new DifferentialDriveOdometry(new Rotation2d(Units.degreesToRadians(getPigeonAngle())), new Pose2d(0, 0, new Rotation2d(0)));
     }
 
+    public void setMotorVoltage(double leftVolts, double rightVolts) {
+        right1.setVoltage(rightVolts);
+        right2.setVoltage(rightVolts);
+        right3.setVoltage(rightVolts);
+        left1.setVoltage(leftVolts);
+        left2.setVoltage(leftVolts);
+        left3.setVoltage(leftVolts);
+        tankDrive.feed();
+    }
+
     public Pose2d getPose() {
         return tankOdometry.getPoseMeters();
     }
@@ -118,6 +134,10 @@ public class Drivetrain extends PIDSubsystem {
 
     public void updateOdometry() {
         tankOdometry.update(new Rotation2d(Units.degreesToRadians(getPigeonAngle())), Units.inchesToMeters(getRightPositionInches()), Units.inchesToMeters(getLeftPositionInches()));
+    }
+
+    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(getRightVelocity(),getLeftVelocity());
     }
 
     public void setWheelSpeeds(ChassisSpeeds chassisSpeeds) {
