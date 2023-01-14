@@ -16,6 +16,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -67,6 +68,17 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("BatteryValue", pdp.getVoltage());
     CommandScheduler.getInstance().run();
+
+    SmartDashboard.putNumber("CHASSIS_pX", Drivetrain.getInstance().getPose().getX());
+    SmartDashboard.putNumber("CHASSIS_pY", Drivetrain.getInstance().getPose().getY());
+
+    SmartDashboard.putNumber("Left_Vel", Drivetrain.getInstance().getLeftVelocity());
+    SmartDashboard.putNumber("Right_Vel", Drivetrain.getInstance().getRightVelocity());
+    SmartDashboard.putNumber("Chassis_vX", Drivetrain.getInstance().getChassisSpeeds().vxMetersPerSecond);
+    SmartDashboard.putNumber("Chassis_vY", Drivetrain.getInstance().getChassisSpeeds().vyMetersPerSecond);
+    SmartDashboard.putNumber("Chassis_vO",  Units.radiansToDegrees(Drivetrain.getInstance().getChassisSpeeds().omegaRadiansPerSecond));
+
+    SmartDashboard.putNumber("Pidgeon_Degrees", Drivetrain.getInstance().getPigeonAngle());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -84,8 +96,8 @@ public class Robot extends TimedRobot {
 
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, new Rotation2d(0)),
-      List.of(new Translation2d(1, 0)),
-      new Pose2d(3, 0, new Rotation2d(0)),
+      List.of(new Translation2d(2.5, 0)),
+      new Pose2d(2.5, -4, new Rotation2d(-Math.PI/2)),
       trajectoryConfig);
 
     Drivetrain.getInstance().resetOdometry(trajectory.getInitialPose());

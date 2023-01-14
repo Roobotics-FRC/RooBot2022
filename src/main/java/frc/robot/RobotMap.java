@@ -13,13 +13,14 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class RobotMap {
 
     // MOTION PROFILING
-    public static final double FEED_FORWARD_kS = 0.57351;
-    public static final double FEED_FORWARD_kV = 1.7667;
-    public static final double FEED_FORWARD_kA = 0.05837;
+    public static final double FEED_FORWARD_kS = 0.58981;
+    public static final double FEED_FORWARD_kV = 2.4581;
+    public static final double FEED_FORWARD_kA = 0.33357;
 
-    public static final double FEED_BACK_VEL_kP = 1.2435;
+    // public static final double FEED_BACK_VEL_kP = 2.7632;
+    public static final double FEED_BACK_VEL_kP = 2;
 
-    public static final double MAX_VELOCITY = 3;
+    public static final double MAX_VELOCITY = 2;
     public static final double MAX_ACCELERATION = 1;
 
     public static final double RAMSETE_B = 2;

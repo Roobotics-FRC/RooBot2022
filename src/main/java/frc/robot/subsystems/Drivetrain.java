@@ -6,22 +6,18 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
-public class Drivetrain extends PIDSubsystem {
+public class Drivetrain extends SubsystemBase {
     private static volatile Drivetrain instance;
 
     private WPI_TalonFX right1;
@@ -36,7 +32,6 @@ public class Drivetrain extends PIDSubsystem {
     private DifferentialDriveOdometry tankOdometry;
 
     private PigeonIMU pigeon;
-    private double initialAngle;
 
     /**
      * The getter for the Drivetrain class.
@@ -54,9 +49,6 @@ public class Drivetrain extends PIDSubsystem {
     }
 
     private Drivetrain() {
-        super(new PIDController(RobotMap.DRIVETRAIN_ANG_PID_GAINS.kP, RobotMap.DRIVETRAIN_ANG_PID_GAINS.kI, RobotMap.DRIVETRAIN_ANG_PID_GAINS.kD));
-        getController().setTolerance(0.1, 0.1);
-
         this.right1 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_1.id);
         this.right2 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_2.id);
         this.right3 = new WPI_TalonFX(RobotMap.DRIVETRAIN_MOTOR_RIGHT_3.id);
@@ -101,11 +93,12 @@ public class Drivetrain extends PIDSubsystem {
         left1.config_kD(0, RobotMap.DRIVETRAIN_TALON_PID_GAINS.kD);
 
         pigeon = new PigeonIMU(RobotMap.PIGEON_ID);
-
-        getController().setTolerance(5, 10);
-        getController().enableContinuousInput(0, 360);
-
         tankOdometry = new DifferentialDriveOdometry(new Rotation2d(Units.degreesToRadians(getPigeonAngle())), new Pose2d(0, 0, new Rotation2d(0)));
+    }
+
+    @Override
+    public void periodic() {
+        updateOdometry();
     }
 
     public void setMotorVoltage(double leftVolts, double rightVolts) {
@@ -129,7 +122,7 @@ public class Drivetrain extends PIDSubsystem {
 
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
-        tankOdometry.resetPosition(pose, new Rotation2d(Units.inchesToMeters(getLeftPositionInches())));
+        tankOdometry.resetPosition(pose, new Rotation2d(Units.degreesToRadians(getPigeonAngle())));
     }
 
     public void updateOdometry() {
@@ -150,7 +143,7 @@ public class Drivetrain extends PIDSubsystem {
     }
 
     public double getRightVelocity() {
-        return Units.inchesToMeters((right1.getSelectedSensorVelocity() / 2048) * (Math.PI * 12));
+        return Units.inchesToMeters((right1.getSelectedSensorVelocity() / 2048) * (Math.PI * 6));
     }
 
     // Returns in METERS PER SECOND
@@ -158,7 +151,7 @@ public class Drivetrain extends PIDSubsystem {
         // 2048 encoder units per rotation
         // Wheel diameter of 6 inches
         // Wheel circumfrence of 12pi
-        return Units.inchesToMeters((left1.getSelectedSensorVelocity() / 2048) * (Math.PI * 12));
+        return Units.inchesToMeters((left1.getSelectedSensorVelocity() / 2048) * (Math.PI * 6));
     }
 
     public void drive(double leftSpeed, double rightSpeed) {
@@ -166,7 +159,8 @@ public class Drivetrain extends PIDSubsystem {
     }
 
     public double getPigeonAngle() {
-        return normalizeAngle(this.getPigeonYawRaw() - this.initialAngle);
+        // return normalizeAngle(this.getPigeonYawRaw() - this.initialAngle);
+        return normalizeAngle(this.getPigeonYawRaw());
     }
 
     private double normalizeAngle(double angle) {
@@ -181,33 +175,10 @@ public class Drivetrain extends PIDSubsystem {
         }
     }
 
-    public void resetPigeonYaw() {
-        this.initialAngle = this.getPigeonYawRaw();
-    }
-
-    public void setPigeonYaw(double angle) {
-        this.initialAngle = this.getPigeonYawRaw() + angle;
-    }
-
     private double getPigeonYawRaw() {
         double[] ypr = new double[3];
         this.pigeon.getYawPitchRoll(ypr);
         return ypr[0] * -1.0D;
-    }
-
-    @Override
-    protected double getMeasurement() {
-        return getPigeonAngle();
-    }
-
-    @Override
-    protected void useOutput(double output, double setpoint) {
-        double outputConstrained = RobotMap.pidConstrainPercentOutput(output);
-        setRightPercentOutput(outputConstrained);
-        setLeftPercentOutput(-outputConstrained);
-        SmartDashboard.putNumber("DrivePIDOutput", outputConstrained);
-        SmartDashboard.putNumber("DrivePIDSetPoint", setpoint);
-        
     }
 
     public void setNeutralMode(NeutralMode mode) {
