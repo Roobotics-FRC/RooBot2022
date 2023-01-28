@@ -24,12 +24,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Auton.DriveDistanceAuton;
 import frc.robot.commands.Teleop.DriveWithJoystick;
-import frc.robot.input.OI;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -110,8 +106,8 @@ public class Robot extends TimedRobot {
         new SimpleMotorFeedforward(RobotMap.FEED_FORWARD_kS, RobotMap.FEED_FORWARD_kV, RobotMap.FEED_FORWARD_kA),
         RobotMap.DRIVE_KINEMATICS,
         drivetrain::getWheelSpeeds,
-        new PIDController(RobotMap.FEED_BACK_VEL_kP, 0, 0),
-        new PIDController(RobotMap.FEED_BACK_VEL_kP, 0, 0),
+        new PIDController(RobotMap.FEED_BACK_VEL_kP, 0, RobotMap.FEED_BACK_VEL_kD),
+        new PIDController(RobotMap.FEED_BACK_VEL_kP, 0, RobotMap.FEED_BACK_VEL_kD),
         drivetrain::setMotorVoltage,
         drivetrain);
 
