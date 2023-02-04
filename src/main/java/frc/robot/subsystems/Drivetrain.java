@@ -101,6 +101,14 @@ public class Drivetrain extends SubsystemBase {
         updateOdometry();
     }
 
+    public double getRightVoltage() {
+        return right1.getMotorOutputVoltage();
+    }
+
+    public double getLeftVoltage() {
+        return left1.getMotorOutputVoltage();
+    }
+
     public void setMotorVoltage(double leftVolts, double rightVolts) {
         right1.setVoltage(rightVolts);
         right2.setVoltage(rightVolts);
