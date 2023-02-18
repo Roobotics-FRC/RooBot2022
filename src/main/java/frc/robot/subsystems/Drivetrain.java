@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -104,7 +105,7 @@ public class Drivetrain extends SubsystemBase {
     public void setMotorVoltage(double leftVolts, double rightVolts) {
         right1.setVoltage(rightVolts);
         right2.setVoltage(rightVolts);
-        right3.setVoltage(rightVolts);
+        right3.setVoltage(rightVolts);            
         left1.setVoltage(leftVolts);
         left2.setVoltage(leftVolts);
         left3.setVoltage(leftVolts);

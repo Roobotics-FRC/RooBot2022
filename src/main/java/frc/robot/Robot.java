@@ -4,27 +4,24 @@
 
 package frc.robot;
 
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.Path;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Auton.DriveInCommand;
+import frc.robot.commands.Auton.DriveOutCommand;
 import frc.robot.commands.Teleop.DriveWithJoystick;
 import frc.robot.subsystems.Drivetrain;
 
@@ -39,6 +36,9 @@ public class Robot extends TimedRobot {
   private PowerDistribution pdp;
   private Compressor compressor;
 
+  String outTrajectoryPath = "paths/out_path.wpilib.json";
+  String inTrajectoryPath = "paths/in_path.wpilib.json";
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -51,6 +51,22 @@ public class Robot extends TimedRobot {
 
     Drivetrain.getInstance();
     CommandScheduler.getInstance().setDefaultCommand(Drivetrain.getInstance(), new DriveWithJoystick());
+
+    // Set out_path trajectory
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(outTrajectoryPath);
+      RobotMap.DRIVE_OUT_TRAJECTORY = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + outTrajectoryPath, ex.getStackTrace());
+    }
+
+   // Set in_path trajectory
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(inTrajectoryPath);
+      RobotMap.DRIVE_IN_TRAJECTORY = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + inTrajectoryPath, ex.getStackTrace());
+    }
   }
 
   /**
@@ -86,42 +102,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    DifferentialDriveVoltageConstraint vConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(RobotMap.FEED_FORWARD_kS, RobotMap.FEED_FORWARD_kV, RobotMap.FEED_FORWARD_kA), RobotMap.DRIVE_KINEMATICS, 10);
+    m_autonomousCommand = new SequentialCommandGroup(new DriveOutCommand(), new DriveInCommand());
 
-    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(RobotMap.MAX_VELOCITY, RobotMap.MAX_ACCELERATION).setKinematics(RobotMap.DRIVE_KINEMATICS).addConstraint(vConstraint);
-
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, new Rotation2d(0)),
-      List.of(new Translation2d(2.5, 0)),
-      new Pose2d(2.5, -4, new Rotation2d(-Math.PI/2)),
-      trajectoryConfig);
-
-    Drivetrain.getInstance().resetOdometry(trajectory.getInitialPose());
-
-    Drivetrain drivetrain = Drivetrain.getInstance();
-    RamseteCommand ramseteCommand = new RamseteCommand(
-        trajectory,
-        drivetrain::getPose,
-        new RamseteController(RobotMap.RAMSETE_B, RobotMap.RAMSETE_ZETA),
-        new SimpleMotorFeedforward(RobotMap.FEED_FORWARD_kS, RobotMap.FEED_FORWARD_kV, RobotMap.FEED_FORWARD_kA),
-        RobotMap.DRIVE_KINEMATICS,
-        drivetrain::getWheelSpeeds,
-        new PIDController(RobotMap.FEED_BACK_VEL_kP, 0, RobotMap.FEED_BACK_VEL_kD),
-        new PIDController(RobotMap.FEED_BACK_VEL_kP, 0, RobotMap.FEED_BACK_VEL_kD),
-        drivetrain::setMotorVoltage,
-        drivetrain);
-
-      m_autonomousCommand = ramseteCommand.andThen(() -> drivetrain.setMotorVoltage(0, 0));
-
-      if (m_autonomousCommand != null) {
-        m_autonomousCommand.schedule();
-      }
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-
   }
 
   @Override

@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 
@@ -13,22 +14,29 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class RobotMap {
 
     // MOTION PROFILING
-    public static final double FEED_FORWARD_kS = 0.6157;
-    public static final double FEED_FORWARD_kV = 2.3935;
-    public static final double FEED_FORWARD_kA = 0.33298;
+    // public static final double FEED_FORWARD_kS = 0.6157;
+    // public static final double FEED_FORWARD_kV = 2.3935;
+    // public static final double FEED_FORWARD_kA = 0.33298;
+    public static final double FEED_FORWARD_kS = 0.5;
+    public static final double FEED_FORWARD_kV = 2;
+    public static final double FEED_FORWARD_kA = 0.2;
 
     // public static final double FEED_BACK_VEL_kP = 2.7117;
-    public static final double FEED_BACK_VEL_kP = 1.8;
+    public static final double FEED_BACK_VEL_kP = 1.6;
     public static final double FEED_BACK_VEL_kD = 0;
     // public static final double FEED_BACK_VEL_kP = 2;
 
-    public static final double MAX_VELOCITY = 1.75;
-    public static final double MAX_ACCELERATION = 1.25;
+    public static final double MAX_VELOCITY = 1.9;
+    public static final double MAX_ACCELERATION = 1.75;
 
     public static final double RAMSETE_B = 2;
     public static final double RAMSETE_ZETA = 0.7;
 
     public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(0.65);
+
+    // Trajectories
+    public static Trajectory DRIVE_OUT_TRAJECTORY;
+    public static Trajectory DRIVE_IN_TRAJECTORY;
 
 
     // Button Ids
