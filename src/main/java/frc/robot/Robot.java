@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Auton.DriveInCommand;
 import frc.robot.commands.Auton.DriveOutCommand;
+import frc.robot.commands.Auton.DriveToChargingStationCommand;
 import frc.robot.commands.Teleop.DriveWithJoystick;
 import frc.robot.subsystems.Drivetrain;
 
@@ -102,7 +103,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = new SequentialCommandGroup(new DriveOutCommand(), new DriveInCommand());
+    // Alpha Routine
+    // m_autonomousCommand = new SequentialCommandGroup(new DriveOutCommand(), new DriveInCommand());
+
+    // Beta Routine
+    m_autonomousCommand = new SequentialCommandGroup(new DriveToChargingStationCommand());
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
